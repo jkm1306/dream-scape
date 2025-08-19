@@ -13,8 +13,11 @@
         <ul class="list-unstyled">
           <li><a href="{% url 'services:home' %}" class="text-light text-decoration-none">Home</a></li>
           <li><a href="{% url 'services:about' %}" class="text-light text-decoration-none">About</a></li>
+
+          {% comment %}
           <li><a href="{% url 'services:service' %}" class="text-light text-decoration-none">Services</a></li>
           <li><a href="{% url 'services:contact' %}" class="text-light text-decoration-none">Contact</a></li>
+          {% endcomment %}
         </ul>
       </div>
 

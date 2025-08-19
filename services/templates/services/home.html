@@ -6,6 +6,8 @@
 <div class="text-center mt-5">
     <h1>{{ welcome_message }}</h1>
     <p class="lead">Explore our products and services tailored just for you.</p>
+    {% comment %}
     <a href="{% url 'services:service' %}" class="btn btn-primary mt-3">View Services</a>
+    {% endcomment %}
 </div>
 {% endblock %}

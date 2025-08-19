@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Scholarship Opportunities for Students</h2>
+  <p>
+    We provide opportunities for <strong>Undergraduate</strong> and 
+    <strong>Postgraduate</strong> students to apply for scholarships.
+  </p>
+  <p>
+    Click below to apply for a scholarship.
+  </p>
+  <a href="{% url 'services:student_application' %}" class="btn btn-success">
+    Apply for Scholarship
+  </a>
+</div>
+{% endblock %}

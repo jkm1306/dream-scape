@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Tourist Travel Inquiries</h2>
+  <p>
+    Interested in visiting amazing destinations? Send us an inquiry and we’ll
+    help you plan your trip.
+  </p>
+  <p>
+    Click below to submit your inquiry.
+  </p>
+  <a href="{% url 'services:tourist_inquiry' %}" class="btn btn-primary">
+    Make an Inquiry
+  </a>
+</div>
+{% endblock %}
