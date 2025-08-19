@@ -12,7 +12,8 @@ class StudentApplication(models.Model):
         (UNDERGRAD, "Undergraduate"),
     ]
 
-    full_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=150, blank=True, null=True)
+    last_name = models.CharField(max_length=150, blank=True, null=True)
     sex = models.CharField(max_length=10, choices=[("Male", "Male"), ("Female", "Female")])
     age = models.PositiveIntegerField()
     study_level = models.CharField(max_length=20, choices=STUDY_LEVEL_CHOICES)
@@ -25,11 +26,16 @@ class StudentApplication(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Application - {self.full_name} ({self.study_level})"
+        return f"Application - {self.first_name} {self.last_name} ({self.study_level})"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()
 
 
 class TouristInquiry(models.Model):
-    full_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=150, blank=True, null=True)
+    last_name = models.CharField(max_length=150, blank=True, null=True)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     destination = models.CharField(max_length=255)
@@ -40,4 +46,8 @@ class TouristInquiry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Inquiry - {self.full_name} ({self.destination})"
+        return f"Inquiry - {self.first_name} {self.last_name} ({self.destination})"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}".strip()

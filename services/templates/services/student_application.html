@@ -2,6 +2,11 @@
 {% block content %}
 <div class="container mt-5" style="max-width: 600px;">
     <h2>Student Scholarship Application</h2>
+    {% if user.is_authenticated %}
+        <div class="alert alert-info">
+            <small><i class="fas fa-info-circle"></i> Your profile information has been pre-filled. You can modify any field as needed.</small>
+        </div>
+    {% endif %}
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}

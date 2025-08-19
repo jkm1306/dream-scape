@@ -25,7 +25,7 @@ def tourists(request):
 
 def student_application_view(request):
     if request.method == "POST":
-        form = StudentApplicationForm(request.POST)
+        form = StudentApplicationForm(request.POST, user=request.user)
         if form.is_valid():
             application = form.save(commit=False)
             application.submitted_by = request.user
@@ -33,13 +33,13 @@ def student_application_view(request):
             messages.success(request, "Your scholarship application has been submitted successfully.")
             return redirect("services:home")
     else:
-        form = StudentApplicationForm()
+        form = StudentApplicationForm(user=request.user)
     return render(request, "services/student_application.html", {"form": form})
 
 
 def tourist_inquiry_view(request):
     if request.method == "POST":
-        form = TouristInquiryForm(request.POST)
+        form = TouristInquiryForm(request.POST, user=request.user)
         if form.is_valid():
             inquiry = form.save(commit=False)
             inquiry.submitted_by = request.user
@@ -47,5 +47,5 @@ def tourist_inquiry_view(request):
             messages.success(request, "Your inquiry has been submitted successfully.")
             return redirect("services:home")
     else:
-        form = TouristInquiryForm()
+        form = TouristInquiryForm(user=request.user)
     return render(request, "services/tourist_inquiry.html", {"form": form})
