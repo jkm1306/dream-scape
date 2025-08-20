@@ -1,10 +1,255 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --light-blue: #3b82f6;
+    --desert-brown: #d2691e;
+    --light-brown: #f4a460;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+.cultural-navbar {
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    box-shadow: 0 4px 20px rgba(30, 58, 138, 0.1);
+    border-bottom: 3px solid var(--gold);
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.cultural-navbar.scrolled {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(254, 243, 199, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(30, 58, 138, 0.15);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--primary-blue) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+}
+
+.navbar-brand:hover {
+    color: var(--desert-brown) !important;
+    transform: translateY(-2px);
+}
+
+.brand-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+    margin-right: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+.brand-logo:hover {
+    transform: rotate(5deg) scale(1.1);
+    border-color: var(--desert-brown);
+    box-shadow: 0 6px 20px rgba(210, 105, 30, 0.4);
+}
+
+.brand-text {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.navbar-toggler {
+    border: 2px solid var(--desert-brown);
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:hover {
+    background: var(--desert-brown);
+    transform: scale(1.05);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2830, 58, 138, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-toggler:hover .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-nav .nav-link {
+    color: var(--primary-blue) !important;
+    font-weight: 600;
+    padding: 10px 20px !important;
+    margin: 0 5px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.navbar-nav .nav-link:hover::before {
+    left: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--desert-brown) !important;
+    background: rgba(251, 191, 36, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+}
+
+.navbar-nav .nav-link.active {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--light-brown) 100%);
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.3);
+}
+
+.btn-cultural-nav {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--light-brown) 100%);
+    border: none;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.3);
+}
+
+.btn-cultural-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(210, 105, 30, 0.4);
+    color: white !important;
+}
+
+.btn-login-nav {
+    background: transparent;
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue) !important;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-login-nav:hover {
+    background: var(--primary-blue);
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.user-profile {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.user-profile:hover {
+    color: var(--desert-brown);
+}
+
+/* Responsive brand text */
+@media (max-width: 768px) {
+    .brand-text {
+        font-size: 1rem;
+        display: none;
+    }
+    
+    .brand-text-mobile {
+        display: inline;
+        font-size: 0.9rem;
+    }
+    
+    .brand-logo {
+        width: 40px;
+        height: 40px;
+        margin-right: 8px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .brand-text {
+        display: none;
+    }
+    
+    .brand-text-mobile {
+        display: none;
+    }
+    
+    .brand-text-small {
+        display: inline;
+        font-size: 0.8rem;
+    }
+    
+    .brand-logo {
+        width: 35px;
+        height: 35px;
+        margin-right: 6px;
+    }
+}
+
+@media (min-width: 769px) {
+    .brand-text-mobile,
+    .brand-text-small {
+        display: none;
+    }
+}
+
+/* Add some cultural patterns */
+.cultural-navbar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 10% 10%, var(--gold) 1px, transparent 1px),
+        radial-gradient(circle at 90% 90%, var(--cream) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px;
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: -1;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg cultural-navbar fixed-top" id="mainNavbar">
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand fw-bold" href="{% url 'services:home' %}">
-      <img src="{% static 'images/logo.jpeg' %}" alt="Site Logo" height="40">
-      DreamScape
+    <a class="navbar-brand" href="{% url 'services:home' %}">
+      <img src="{% static 'images/logo.png' %}" alt="DreamScape Logo" class="brand-logo">
+      <span class="brand-text">DREAMSCAPE AGENCY</span>
+      <span class="brand-text-mobile">DREAMSCAPE</span>
+      <span class="brand-text-small">DS</span>
     </a>
 
     <!-- Toggler for mobile -->
@@ -15,33 +260,83 @@
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="{% url 'services:home' %}">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'services:about' %}">About</a></li>
-
-        {% comment %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'services:service' %}">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'services:contact' %}">Contact</a></li>
-        {% endcomment %}
-
-        <li class="nav-item"><a class="nav-link" href="{% url 'services:students' %}">Students</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'services:tourists' %}">Tourists</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'services:home' %}">
+            <i class="fas fa-home me-1"></i>Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'services:about' %}">
+            <i class="fas fa-info-circle me-1"></i>About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'services:students' %}">
+            <i class="fas fa-graduation-cap me-1"></i>Students
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'services:tourists' %}">
+            <i class="fas fa-plane me-1"></i>Tourists
+          </a>
+        </li>
       </ul>
 
       <!-- Right side links -->
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
-        </li>
+          <li class="nav-item me-2">
+            <a href="#" class="user-profile">
+              <i class="fas fa-user-circle me-1"></i>
+              <span class="d-none d-md-inline">{{ request.user.first_name|default:request.user.email }}</span>
+              <span class="d-md-none">{{ request.user.first_name|default:request.user.email|slice:":8" }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-login-nav" href="{% url 'users:logout' %}">
+              <i class="fas fa-sign-out-alt me-1 d-none d-sm-inline"></i>Logout
+            </a>
+          </li>
         {% else %}
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:login' %}">Login</a>
-        </li>
-        <li class="nav-item">
-            <a class="btn btn-primary text-white ms-2" href="{% url 'users:signup' %}">Sign Up</a>
-        </li>
+          <li class="nav-item me-2">
+            <a class="btn btn-login-nav" href="{% url 'users:login' %}">
+              <i class="fas fa-sign-in-alt me-1 d-none d-sm-inline"></i>Login
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-cultural-nav" href="{% url 'users:signup' %}">
+              <i class="fas fa-user-plus me-1 d-none d-sm-inline"></i>Sign Up
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- Add padding to body to account for fixed navbar -->
+<style>
+body {
+    padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+}
+</style>
+
+<script>
+// Add active class to current page nav link
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>

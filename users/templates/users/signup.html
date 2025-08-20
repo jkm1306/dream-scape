@@ -1,23 +1,221 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}Sign Up - DreamScape Agency{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="mb-4">Create an Account</h2>
-    
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --desert-brown: #d2691e;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary mt-3">Sign Up</button>
-    </form>
+.signup-section {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+}
 
+.signup-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid var(--gold);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    margin: 0 auto 15px;
+    display: block;
+}
+
+.signup-title {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    height: 50px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+}
+
+.form-label {
+    color: var(--primary-blue);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.btn-signup {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--gold) 100%);
+    border: none;
+    color: white;
+    padding: 15px 0;
+    border-radius: 10px;
+    font-weight: 600;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+.btn-signup:hover {
+    transform: translateY(-2px);
+    color: white;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: 10px;
+}
+
+.login-link a {
+    color: var(--desert-brown);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.alert {
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.row {
+    margin: 0 -10px;
+}
+
+.col-md-6 {
+    padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+    .signup-card {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+}
+</style>
+
+<div class="signup-section">
+    <div class="container">
+        <div class="signup-card">
+            <div class="signup-header">
+                <img src="{% static 'images/logo.jpeg' %}" alt="DreamScape Logo" class="signup-logo">
+                <h1 class="signup-title">Join DreamScape</h1>
+                <p class="text-muted">Start your journey with us</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas fa-info-circle me-2"></i>{{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_first_name" class="form-label">First Name</label>
+                            <input type="text" name="first_name" id="id_first_name" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_last_name" class="form-label">Last Name</label>
+                            <input type="text" name="last_name" id="id_last_name" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email" class="form-label">Email Address</label>
+                    <input type="email" name="email" id="id_email" class="form-control" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_phone" class="form-label">Phone Number</label>
+                            <input type="tel" name="phone" id="id_phone" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_country" class="form-label">Country</label>
+                            <select name="country" id="id_country" class="form-control" required>
+                                <option value="">Select your country</option>
+                                <option value="zambia">Zambia</option>
+                                <option value="botswana">Botswana</option>
+                                <option value="malawi">Malawi</option>
+                                <option value="zimbabwe">Zimbabwe</option>
+                                <option value="namibia">Namibia</option>
+                                <option value="south_africa">South Africa</option>
+                                <option value="kenya">Kenya</option>
+                                <option value="tanzania">Tanzania</option>
+                                <option value="uganda">Uganda</option>
+                                <option value="ghana">Ghana</option>
+                                <option value="nigeria">Nigeria</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password" class="form-label">Password</label>
+                    <input type="password" name="password" id="id_password" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="id_confirm_password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-signup">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+
+            <div class="login-link">
+                <p class="mb-0">Already have an account? 
+                    <a href="{% url 'users:login' %}">Sign In</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

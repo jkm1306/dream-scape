@@ -1,41 +1,417 @@
-<footer class="bg-dark text-light pt-5 pb-4 mt-5">
+{% load static %}
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --light-blue: #3b82f6;
+    --desert-brown: #d2691e;
+    --light-brown: #f4a460;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+.cultural-footer {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 0 20px;
+    margin-top: 50px;
+}
+
+.cultural-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, var(--cream) 1px, transparent 1px);
+    background-size: 80px 80px, 40px 40px;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.footer-content {
+    position: relative;
+    z-index: 2;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.footer-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+    margin-right: 15px;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.footer-logo:hover {
+    transform: rotate(5deg) scale(1.1);
+}
+
+.footer-brand-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--cream) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+}
+
+.footer-section h5 {
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-section h5::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--cream) 100%);
+    border-radius: 2px;
+}
+
+.footer-link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    padding-left: 10px;
+    margin-left: -10px;
+}
+
+.footer-link:hover {
+    color: var(--gold);
+    background: rgba(251, 191, 36, 0.1);
+    transform: translateX(10px);
+    padding-left: 15px;
+}
+
+.footer-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border-left: 4px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.contact-icon {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--cream) 100%);
+    color: var(--primary-blue);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-link {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.social-link:hover {
+    background: var(--gold);
+    color: var(--primary-blue);
+    transform: translateY(-5px);
+    border-color: var(--cream);
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
+}
+
+.footer-bottom {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid rgba(251, 191, 36, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-tagline {
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 10px;
+}
+
+.footer-awards {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.award-badge {
+    background: rgba(251, 191, 36, 0.2);
+    color: var(--gold);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--gold);
+}
+
+@media (max-width: 768px) {
+    .cultural-footer {
+        padding: 40px 0 20px;
+    }
+    
+    .footer-brand {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .footer-brand-text {
+        font-size: 1.4rem;
+    }
+    
+    .footer-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .footer-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .footer-section h5::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .footer-bottom-content {
+        text-align: center;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .footer-awards {
+        justify-content: center;
+    }
+}
+</style>
+
+<footer class="cultural-footer">
   <div class="container">
-    <div class="row">
-      <!-- About -->
-      <div class="col-md-4 mb-3">
-        <h5 class="fw-bold">DreamScape</h5>
-        <p>Providing seamless services and products to bring your ideas to life. Your dream, our mission.</p>
-      </div>
+    <div class="footer-content">
+      <div class="row">
+        <!-- About Section -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="footer-section">
+            <div class="footer-brand">
+              <img src="{% static 'images/logo.png' %}" alt="DreamScape Logo" class="footer-logo">
+              <div class="footer-brand-text">DREAMSCAPE</div>
+            </div>
+            <p class="footer-tagline">"Where Dreams Meet Destinations"</p>
+            <p>
+              Bridging cultures and creating opportunities through exceptional travel experiences 
+              and world-class education pathways. Your journey to global success starts here.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-link" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-link" title="Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="social-link" title="Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-link" title="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+        </div>
 
-      <!-- Quick Links -->
-      <div class="col-md-4 mb-3">
-        <h5 class="fw-bold">Quick Links</h5>
-        <ul class="list-unstyled">
-          <li><a href="{% url 'services:home' %}" class="text-light text-decoration-none">Home</a></li>
-          <li><a href="{% url 'services:about' %}" class="text-light text-decoration-none">About</a></li>
+        <!-- Quick Links -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <div class="footer-section">
+            <h5>Quick Links</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% url 'services:home' %}" class="footer-link">
+                  <i class="fas fa-home"></i>Home
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'services:about' %}" class="footer-link">
+                  <i class="fas fa-info-circle"></i>About Us
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'services:students' %}" class="footer-link">
+                  <i class="fas fa-graduation-cap"></i>Students
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'services:tourists' %}" class="footer-link">
+                  <i class="fas fa-plane"></i>Tourists
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-          {% comment %}
-          <li><a href="{% url 'services:service' %}" class="text-light text-decoration-none">Services</a></li>
-          <li><a href="{% url 'services:contact' %}" class="text-light text-decoration-none">Contact</a></li>
-          {% endcomment %}
-        </ul>
-      </div>
+        <!-- Services -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="footer-section">
+            <h5>Our Services</h5>
+            <ul class="list-unstyled">
+              <li>
+                <a href="{% url 'services:student_application' %}" class="footer-link">
+                  <i class="fas fa-university"></i>Scholarship Applications
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'services:tourist_inquiry' %}" class="footer-link">
+                  <i class="fas fa-map-marked-alt"></i>Travel Planning
+                </a>
+              </li>
+              <li>
+                <a href="#" class="footer-link">
+                  <i class="fas fa-passport"></i>Visa Assistance
+                </a>
+              </li>
+              <li>
+                <a href="#" class="footer-link">
+                  <i class="fas fa-language"></i>Cultural Orientation
+                </a>
+              </li>
+              <li>
+                <a href="#" class="footer-link">
+                  <i class="fas fa-headset"></i>24/7 Support
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-      <!-- Contact -->
-      <div class="col-md-4 mb-3">
-        <h5 class="fw-bold">Contact</h5>
-        <p>Email: support@dreamscape.com</p>
-        <p>Phone: +260 974 396 754</p>
-        <p>Address: Zamtel house, Lusaka, Zambia</p>
+        <!-- Contact Info -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="footer-section">
+            <h5>Get In Touch</h5>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <strong>Email</strong><br>
+                <a href="mailto:travelagencydreamscape@gmail.com" class="text-light">travelagencydreamscape@gmail.com</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+                <div>
+                <strong>WhatsApp</strong><br>
+                <a href="https://wa.me/260779396709" class="text-light" target="_blank" rel="noopener">
+                  +260779396709
+                </a>
+                </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <strong>Address</strong><br>
+                Zamtel House, Lusaka, Zambia
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="text-center mt-3">
-      <p>© 2025 DreamScape. All Rights Reserved.</p>
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-content">
+          <div>
+            <p class="mb-0">© 2025 DreamScape Agency. All Rights Reserved.</p>
+            <small class="text-light">Experience Beyond Reality.</small>
+          </div>
+          <div class="footer-awards">
+            <span class="award-badge">
+              <i class="fas fa-award me-1"></i>Trusted Partner
+            </span>
+            <span class="award-badge">
+              <i class="fas fa-shield-alt me-1"></i>Secure & Licensed
+            </span>
+            <span class="award-badge">
+              <i class="fas fa-star me-1"></i>5-Star Rated
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <style>
-    footer a:hover { color: #ffcc00; }
-  </style>
 </footer>

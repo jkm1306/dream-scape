@@ -1,35 +1,444 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login - DreamScape Agency{% endblock %}
 
 {% block content %}
-<div class="container mt-5" style="max-width: 500px;">
-    <h2 class="mb-4">Login to Your Account</h2>
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --light-blue: #3b82f6;
+    --desert-brown: #d2691e;
+    --light-brown: #f4a460;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+.login-section {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" name="email" id="email" class="form-control" required>
+.login-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, var(--cream) 1px, transparent 1px);
+    background-size: 80px 80px, 40px 40px;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.login-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 50px 40px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--desert-brown) 50%, var(--primary-blue) 100%);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+    margin: 0 auto 20px;
+    display: block;
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.login-logo:hover {
+    transform: rotate(5deg) scale(1.05);
+}
+
+.login-title {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.login-subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.form-floating {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-floating > .form-control {
+    height: 60px;
+    border: 2px solid #e1e5e9;
+    border-radius: 15px;
+    background: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    padding: 20px 20px 10px 20px;
+}
+
+.form-floating > .form-control:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+    background: #fff;
+}
+
+.form-floating > label {
+    color: #666;
+    font-weight: 500;
+    padding: 20px 20px 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--desert-brown);
+    font-weight: 600;
+}
+
+.input-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--desert-brown);
+    z-index: 5;
+}
+
+.btn-cultural-login {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--light-brown) 100%);
+    border: none;
+    color: white;
+    padding: 18px 0;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 8px 25px rgba(210, 105, 30, 0.3);
+}
+
+.btn-cultural-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(210, 105, 30, 0.4);
+    background: linear-gradient(135deg, var(--light-brown) 0%, var(--desert-brown) 100%);
+}
+
+.btn-cultural-login:active {
+    transform: translateY(-1px);
+}
+
+.login-divider {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+}
+
+.login-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ddd, transparent);
+}
+
+.login-divider span {
+    background: white;
+    padding: 0 20px;
+    color: #666;
+    font-weight: 500;
+}
+
+.signup-link {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(251, 191, 36, 0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.signup-link p {
+    margin: 0;
+    color: #666;
+}
+
+.signup-link a {
+    color: var(--desert-brown);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.signup-link a:hover {
+    color: var(--primary-blue);
+    text-decoration: underline;
+}
+
+.alert-cultural {
+    border: none;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+}
+
+.alert-cultural.alert-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border-left: 4px solid #dc3545;
+}
+
+.alert-cultural.alert-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border-left: 4px solid #28a745;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--desert-brown);
+    cursor: pointer;
+    z-index: 5;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.password-toggle:hover {
+    background: rgba(210, 105, 30, 0.1);
+}
+
+@media (max-width: 768px) {
+    .login-section {
+        min-height: calc(100vh - 80px);
+        padding: 20px 0;
+    }
+    
+    .login-card {
+        padding: 40px 30px;
+        margin: 20px;
+        border-radius: 20px;
+    }
+    
+    .login-title {
+        font-size: 1.6rem;
+    }
+    
+    .login-logo {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-card {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+    
+    .login-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* Loading animation */
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+</style>
+
+<div class="login-section">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="{% static 'images/login.png' %}" alt="DreamScape Logo" class="login-logo">
+                <h1 class="login-title">Welcome Back</h1>
+                <p class="login-subtitle">Sign in to continue your journey</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-cultural alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-triangle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" id="loginForm">
+                {% csrf_token %}
+                
+                <div class="form-floating">
+                    <input type="email" 
+                           name="email" 
+                           id="email" 
+                           class="form-control" 
+                           placeholder="Enter your email"
+                           required>
+                    <label for="email">Email Address</label>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+
+                <div class="form-floating">
+                    <input type="password" 
+                           name="password" 
+                           id="password" 
+                           class="form-control" 
+                           placeholder="Enter your password"
+                           required>
+                    <label for="password">Password</label>
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="passwordIcon"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn btn-cultural-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Sign In
+                </button>
+            </form>
+
+            <div class="login-divider">
+                <span>New to DreamScape?</span>
+            </div>
+
+            <div class="signup-link">
+                <p>
+                    Don't have an account? 
+                    <a href="{% url 'users:signup' %}">
+                        <i class="fas fa-user-plus me-1"></i>Create Account
+                    </a>
+                </p>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" id="password" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Login</button>
-    </form>
-
-    <p class="mt-3">
-        Don't have an account? <a href="{% url 'users:signup' %}">Sign Up</a>
-    </p>
+    </div>
 </div>
+
+<script>
+// Password toggle functionality
+function togglePassword() {
+    const passwordField = document.getElementById('password');
+    const passwordIcon = document.getElementById('passwordIcon');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        passwordIcon.classList.remove('fa-eye');
+        passwordIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        passwordIcon.classList.remove('fa-eye-slash');
+        passwordIcon.classList.add('fa-eye');
+    }
+}
+
+// Form submission with loading state
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('loginBtn');
+    submitBtn.classList.add('btn-loading');
+    submitBtn.disabled = true;
+    
+    // Re-enable after 5 seconds in case of issues
+    setTimeout(() => {
+        submitBtn.classList.remove('btn-loading');
+        submitBtn.disabled = false;
+    }, 5000);
+});
+
+// Auto-hide alerts after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000);
+    });
+});
+
+// Add floating label animation
+document.querySelectorAll('.form-floating input').forEach(input => {
+    input.addEventListener('blur', function() {
+        if (this.value) {
+            this.classList.add('has-value');
+        } else {
+            this.classList.remove('has-value');
+        }
+    });
+});
+</script>
 {% endblock %}
