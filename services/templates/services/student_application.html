@@ -1,16 +1,391 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Application - DreamScape Agency{% endblock %}
+
 {% block content %}
-<div class="container mt-5" style="max-width: 600px;">
-    <h2>Student Scholarship Application</h2>
-    {% if user.is_authenticated %}
-        <div class="alert alert-info">
-            <small><i class="fas fa-info-circle"></i> Your profile information has been pre-filled. You can modify any field as needed.</small>
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --desert-brown: #d2691e;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+.application-hero {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    color: white;
+    padding: 100px 0 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.application-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, var(--cream) 1px, transparent 1px);
+    background-size: 80px 80px, 40px 40px;
+    opacity: 0.1;
+}
+
+.application-section {
+    background: linear-gradient(135deg, var(--cream) 0%, white 100%);
+    padding: 60px 0;
+    min-height: calc(100vh - 200px);
+}
+
+.application-card {
+    background: white;
+    border-radius: 25px;
+    padding: 50px;
+    box-shadow: 0 20px 40px rgba(30, 58, 138, 0.1);
+    border-top: 5px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+}
+
+.application-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--desert-brown) 100%);
+    opacity: 0.1;
+    border-radius: 0 25px 0 50px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.form-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--gold) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 25px rgba(210, 105, 30, 0.3);
+}
+
+.form-title {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.form-section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    color: var(--desert-brown);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    color: var(--primary-blue);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.form-control:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(251, 191, 36, 0.25);
+    background: white;
+    transform: translateY(-2px);
+}
+
+.form-control:hover {
+    border-color: var(--desert-brown);
+    background: white;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--gold) 100%);
+    border: none;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(210, 105, 30, 0.3);
+    width: 100%;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(210, 105, 30, 0.4);
+    color: white;
+}
+
+.info-alert {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%);
+    border: 1px solid var(--gold);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: var(--primary-blue);
+}
+
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.progress-step {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin: 0 10px;
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+@media (max-width: 768px) {
+    .application-card {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    
+    .form-title {
+        font-size: 1.6rem;
+    }
+    
+    .form-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+</style>
+
+<!-- Hero Section -->
+<section class="application-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            <i class="fas fa-graduation-cap me-3"></i>
+            Student Application
+        </h1>
+        <p class="lead">
+            Take the first step towards your academic dreams in Europe
+        </p>
+    </div>
+</section>
+
+<!-- Application Form Section -->
+<section class="application-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="application-card">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-university fa-2x text-white"></i>
+                        </div>
+                        <h2 class="form-title">Scholarship Application Form</h2>
+                        <p class="form-subtitle">Complete your journey to European education</p>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <div class="info-alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Welcome back!</strong> Your profile information has been pre-filled. You can modify any field as needed.
+                        </div>
+                    {% endif %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                <i class="fas fa-check-circle me-2"></i>{{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" id="applicationForm">
+                        {% csrf_token %}
+                        
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-user"></i>Personal Information
+                            </h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                                        {{ form.first_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                                        {{ form.last_name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.sex.id_for_label }}" class="form-label">Gender</label>
+                                        {{ form.sex }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.age.id_for_label }}" class="form-label">Age</label>
+                                        {{ form.age }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.study_level.id_for_label }}" class="form-label">Study Level</label>
+                                        {{ form.study_level }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-envelope"></i>Contact Information
+                            </h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.phone.id_for_label }}" class="form-label">Phone Number</label>
+                                        {{ form.phone }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Academic Information -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-book"></i>Academic Information
+                            </h4>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.course_of_interest.id_for_label }}" class="form-label">Course of Interest</label>
+                                {{ form.course_of_interest }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.passport_or_nrc.id_for_label }}" class="form-label">Passport/NRC Number</label>
+                                {{ form.passport_or_nrc }}
+                            </div>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-comment"></i>Additional Information
+                            </h4>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.notes.id_for_label }}" class="form-label">Additional Notes</label>
+                                {{ form.notes }}
+                                <small class="text-muted d-block mt-1">
+                                    Tell us about your academic goals, achievements, or any special requirements
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-submit" id="submitBtn">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Submit Application
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Submit Application</button>
-    </form>
-</div>
+    </div>
+</section>
+
+<script>
+// Add some interactivity
+document.getElementById('applicationForm').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+    submitBtn.disabled = true;
+});
+
+// Add floating label effect
+document.querySelectorAll('.form-control').forEach(input => {
+    input.addEventListener('focus', function() {
+        this.previousElementSibling.style.color = 'var(--gold)';
+    });
+    
+    input.addEventListener('blur', function() {
+        this.previousElementSibling.style.color = 'var(--primary-blue)';
+    });
+});
+</script>
 {% endblock %}

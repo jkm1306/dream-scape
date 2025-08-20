@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm
+from django.contrib.auth.decorators import login_required
 
 def signup_view(request):
     if request.method == "POST":
@@ -36,3 +37,32 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("services:home")
+
+
+@login_required
+def profile_view(request):
+    """Display user profile information"""
+    user = request.user
+    
+    # Get user's applications and inquiries (if they exist)
+    student_applications = []
+    tourist_inquiries = []
+    testimonials = []
+    
+    try:
+        from services.models import StudentApplication, TouristInquiry, Testimonial
+        # Get applications related to this user's email
+        student_applications = StudentApplication.objects.filter(email=user.email).order_by('-created_at')[:5]
+        tourist_inquiries = TouristInquiry.objects.filter(email=user.email).order_by('-created_at')[:5]
+        testimonials = Testimonial.objects.filter(submitted_by=user).order_by('-created_at')[:5]
+    except:
+        pass  # Models might not exist yet
+    
+    context = {
+        'user': user,
+        'student_applications': student_applications,
+        'tourist_inquiries': tourist_inquiries,
+        'testimonials': testimonials,
+    }
+    
+    return render(request, "users/profile.html", context)

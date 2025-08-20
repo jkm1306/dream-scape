@@ -1,16 +1,397 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tourist Inquiry - DreamScape Agency{% endblock %}
+
 {% block content %}
-<div class="container mt-5" style="max-width: 600px;">
-    <h2>Tourist Inquiry</h2>
-    {% if user.is_authenticated %}
-        <div class="alert alert-info">
-            <small><i class="fas fa-info-circle"></i> Your profile information has been pre-filled. You can modify any field as needed.</small>
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --desert-brown: #d2691e;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+.inquiry-hero {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--primary-blue) 100%);
+    color: white;
+    padding: 100px 0 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.inquiry-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, var(--cream) 1px, transparent 1px);
+    background-size: 60px 60px, 40px 40px;
+    opacity: 0.1;
+}
+
+.inquiry-section {
+    background: linear-gradient(135deg, var(--cream) 0%, white 100%);
+    padding: 60px 0;
+    min-height: calc(100vh - 200px);
+}
+
+.inquiry-card {
+    background: white;
+    border-radius: 25px;
+    padding: 50px;
+    box-shadow: 0 20px 40px rgba(210, 105, 30, 0.1);
+    border-top: 5px solid var(--desert-brown);
+    position: relative;
+    overflow: hidden;
+}
+
+.inquiry-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--gold) 100%);
+    opacity: 0.1;
+    border-radius: 0 0 50px 25px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+.form-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+}
+
+.form-title {
+    color: var(--desert-brown);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.form-section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--desert-brown);
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    color: var(--desert-brown);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.form-control:focus {
+    border-color: var(--desert-brown);
+    box-shadow: 0 0 0 0.2rem rgba(210, 105, 30, 0.25);
+    background: white;
+    transform: translateY(-2px);
+}
+
+.form-control:hover {
+    border-color: var(--gold);
+    background: white;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    border: none;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+    width: 100%;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(30, 58, 138, 0.4);
+    color: white;
+}
+
+.info-alert {
+    background: linear-gradient(135deg, rgba(210, 105, 30, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%);
+    border: 1px solid var(--desert-brown);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: var(--desert-brown);
+}
+
+.travel-preview {
+    background: linear-gradient(135deg, var(--cream) 0%, white 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    border-left: 4px solid var(--gold);
+}
+
+@media (max-width: 768px) {
+    .inquiry-card {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+    
+    .form-title {
+        font-size: 1.6rem;
+    }
+    
+    .form-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+</style>
+
+<!-- Hero Section -->
+<section class="inquiry-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            <i class="fas fa-plane me-3"></i>
+            Tourist Inquiry
+        </h1>
+        <p class="lead">
+            Discover the hidden gems of Northern Cyprus with cultural sensitivity
+        </p>
+    </div>
+</section>
+
+<!-- Inquiry Form Section -->
+<section class="inquiry-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="inquiry-card">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-map-marked-alt fa-2x text-white"></i>
+                        </div>
+                        <h2 class="form-title">Plan Your Cultural Journey</h2>
+                        <p class="form-subtitle">Let us create an unforgettable experience tailored to your needs</p>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <div class="info-alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Welcome back!</strong> Your profile information has been pre-filled. You can modify any field as needed.
+                        </div>
+                    {% endif %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                <i class="fas fa-check-circle me-2"></i>{{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" id="inquiryForm">
+                        {% csrf_token %}
+                        
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-user"></i>Personal Information
+                            </h4>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                                        {{ form.first_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                                        {{ form.last_name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label">Email Address</label>
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.phone.id_for_label }}" class="form-label">Phone Number</label>
+                                        {{ form.phone }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Travel Details -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-suitcase-rolling"></i>Travel Details
+                            </h4>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="{{ form.destination.id_for_label }}" class="form-label">Preferred Destination</label>
+                                        {{ form.destination }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.number_of_people.id_for_label }}" class="form-label">Number of People</label>
+                                        {{ form.number_of_people }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.travel_date.id_for_label }}" class="form-label">Preferred Travel Date</label>
+                                {{ form.travel_date }}
+                                <small class="text-muted d-block mt-1">
+                                    Please provide your preferred travel date or date range
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Special Requirements -->
+                        <div class="form-section">
+                            <h4 class="section-title">
+                                <i class="fas fa-star"></i>Special Requirements & Notes
+                            </h4>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.notes.id_for_label }}" class="form-label">Additional Information</label>
+                                {{ form.notes }}
+                                <small class="text-muted d-block mt-1">
+                                    Tell us about special requirements, dietary needs, cultural preferences, or any specific experiences you're looking for
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="travel-preview">
+                            <h5 style="color: var(--desert-brown); margin-bottom: 15px;">
+                                <i class="fas fa-info-circle me-2"></i>What to Expect
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-4 text-center mb-3">
+                                    <i class="fas fa-mosque fa-2x" style="color: var(--gold); margin-bottom: 10px;"></i>
+                                    <h6 style="color: var(--primary-blue);">Cultural Sites</h6>
+                                    <small class="text-muted">Historic mosques and cultural landmarks</small>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <i class="fas fa-utensils fa-2x" style="color: var(--gold); margin-bottom: 10px;"></i>
+                                    <h6 style="color: var(--primary-blue);">Halal Dining</h6>
+                                    <small class="text-muted">Authentic halal cuisine experiences</small>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <i class="fas fa-hands-praying fa-2x" style="color: var(--gold); margin-bottom: 10px;"></i>
+                                    <h6 style="color: var(--primary-blue);">Cultural Respect</h6>
+                                    <small class="text-muted">Tours designed with cultural sensitivity</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-submit" id="submitBtn">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Submit Inquiry
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit Inquiry</button>
-    </form>
-</div>
+    </div>
+</section>
+
+<script>
+// Add some interactivity
+document.getElementById('inquiryForm').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+    submitBtn.disabled = true;
+});
+
+// Add floating label effect
+document.querySelectorAll('.form-control').forEach(input => {
+    input.addEventListener('focus', function() {
+        this.previousElementSibling.style.color = 'var(--gold)';
+    });
+    
+    input.addEventListener('blur', function() {
+        this.previousElementSibling.style.color = 'var(--desert-brown)';
+    });
+});
+
+// Add date input styling
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.borderColor = 'var(--desert-brown)';
+        });
+    });
+});
+</script>
 {% endblock %}

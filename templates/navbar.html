@@ -249,7 +249,7 @@
       <img src="{% static 'images/logo.png' %}" alt="DreamScape Logo" class="brand-logo">
       <span class="brand-text">DREAMSCAPE AGENCY</span>
       <span class="brand-text-mobile">DREAMSCAPE</span>
-      <span class="brand-text-small">DS</span>
+      <span class="brand-text-small">DREAMSCAPE</span>
     </a>
 
     <!-- Toggler for mobile -->
@@ -286,7 +286,7 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
         {% if request.user.is_authenticated %}
           <li class="nav-item me-2">
-            <a href="#" class="user-profile">
+            <a href="{% url 'users:profile' %}" class="user-profile">
               <i class="fas fa-user-circle me-1"></i>
               <span class="d-none d-md-inline">{{ request.user.first_name|default:request.user.email }}</span>
               <span class="d-md-none">{{ request.user.first_name|default:request.user.email|slice:":8" }}</span>

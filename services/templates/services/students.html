@@ -1,16 +1,578 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Study Destinations - DreamScape Agency{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-  <h2>Scholarship Opportunities for Students</h2>
-  <p>
-    We provide opportunities for <strong>Undergraduate</strong> and 
-    <strong>Postgraduate</strong> students to apply for scholarships.
-  </p>
-  <p>
-    Click below to apply for a scholarship.
-  </p>
-  <a href="{% url 'services:student_application' %}" class="btn btn-success">
-    Apply for Scholarship
-  </a>
-</div>
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --desert-brown: #d2691e;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+.students-hero {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    color: white;
+    padding: 100px 0 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.students-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 30% 30%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 70% 70%, var(--cream) 1px, transparent 1px);
+    background-size: 70px 70px, 35px 35px;
+    opacity: 0.1;
+}
+
+.destinations-section {
+    background: linear-gradient(135deg, var(--cream) 0%, white 100%);
+    padding: 80px 0;
+}
+
+.country-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(30, 58, 138, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    border-top: 4px solid var(--gold);
+}
+
+.country-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(30, 58, 138, 0.15);
+}
+
+.image-carousel {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+}
+
+.carousel-container {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    animation: slide 12s infinite;
+}
+
+.carousel-image {
+    width: 33.33%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9);
+    transition: filter 0.3s ease;
+}
+
+.country-card:hover .carousel-image {
+    filter: brightness(1);
+}
+
+@keyframes slide {
+    0%, 30% { transform: translateX(0); }
+    33.33%, 63.33% { transform: translateX(-33.33%); }
+    66.66%, 96.66% { transform: translateX(-66.66%); }
+    100% { transform: translateX(0); }
+}
+
+.country-info {
+    padding: 30px;
+}
+
+.country-name {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.country-flag {
+    width: 30px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.country-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.study-highlights {
+    margin-bottom: 25px;
+}
+
+.highlight-item {
+    color: var(--desert-brown);
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.highlight-item i {
+    margin-right: 10px;
+    color: var(--gold);
+    width: 20px;
+}
+
+.scholarship-info {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-left: 4px solid var(--gold);
+}
+
+.scholarship-title {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.scholarship-title i {
+    margin-right: 8px;
+    color: var(--gold);
+}
+
+.scholarship-details {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.apply-btn {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.apply-btn:hover {
+    transform: translateY(-2px);
+    color: white;
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title h2 {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.section-title p {
+    color: #666;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--primary-blue) 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.cta-btn {
+    background: white;
+    color: var(--primary-blue);
+    padding: 18px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+}
+
+.cta-btn:hover {
+    background: transparent;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(30, 58, 138, 0.1) 0%, rgba(210, 105, 30, 0.1) 100%);
+    pointer-events: none;
+}
+
+.carousel-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    animation: indicatorPulse 12s infinite;
+}
+
+.indicator:nth-child(1) { animation-delay: 0s; }
+.indicator:nth-child(2) { animation-delay: 4s; }
+.indicator:nth-child(3) { animation-delay: 8s; }
+
+@keyframes indicatorPulse {
+    0%, 30% { background: var(--gold); transform: scale(1.2); }
+    33.33%, 100% { background: rgba(255, 255, 255, 0.5); transform: scale(1); }
+}
+
+.cost-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cost-item {
+    background: rgba(251, 191, 36, 0.1);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.cost-label {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.cost-value {
+    color: var(--desert-brown);
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .country-card {
+        margin: 20px;
+    }
+    
+    .image-carousel {
+        height: 220px;
+    }
+    
+    .country-info {
+        padding: 20px;
+    }
+    
+    .section-title h2 {
+        font-size: 2rem;
+    }
+    
+    .cost-info {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<!-- Hero Section -->
+<section class="students-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            <i class="fas fa-graduation-cap me-3"></i>
+            Study in Europe
+        </h1>
+        <p class="lead">
+            Transform your future with scholarship opportunities in top European universities, designed for African students
+        </p>
+    </div>
+</section>
+
+<!-- Study Destinations Section -->
+<section class="destinations-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Study Destinations</h2>
+            <p>Discover world-class education opportunities with full scholarship support, cultural integration programs, and comprehensive student services</p>
+        </div>
+        
+        <div class="row">
+            <!-- Poland -->
+            <div class="col-lg-4 col-md-6">
+                <div class="country-card">
+                    <div class="image-carousel">
+                        <div class="carousel-container">
+                            <img src="{% static 'images/poland_students1.jpg' %}" alt="African Students in Warsaw University" class="carousel-image">
+                            <img src="{% static 'images/poland_students2.jpg' %}" alt="Students in Krakow Campus" class="carousel-image">
+                            <img src="{% static 'images/poland_students3.jpg' %}" alt="Graduation Ceremony Poland" class="carousel-image">
+                        </div>
+                        <div class="image-overlay"></div>
+                        <div class="carousel-indicators">
+                            <div class="indicator"></div>
+                            <div class="indicator"></div>
+                            <div class="indicator"></div>
+                        </div>
+                    </div>
+                    <div class="country-info">
+                        <h3 class="country-name">
+                            🇵🇱 Poland
+                        </h3>
+                        <p class="country-description">
+                            Experience world-class education in the heart of Europe with excellent scholarship opportunities and vibrant student communities.
+                        </p>
+                        
+                        <div class="study-highlights">
+                            <div class="highlight-item">
+                                <i class="fas fa-university"></i>
+                                Top-ranked universities with English programs
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-euro-sign"></i>
+                                Affordable living costs & tuition fees
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-users"></i>
+                                Strong African student community
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-briefcase"></i>
+                                Post-graduation work opportunities
+                            </div>
+                        </div>
+
+                        <div class="scholarship-info">
+                            <div class="scholarship-title">
+                                <i class="fas fa-award"></i>
+                                Available Scholarships
+                            </div>
+                            <div class="scholarship-details">
+                                • Polish Government Scholarships<br>
+                                • University Merit Scholarships<br>
+                                • EU Erasmus+ Programs<br>
+                                • Full & Partial funding available
+                            </div>
+                        </div>
+
+                        <div class="cost-info">
+                            <div class="cost-item">
+                                <div class="cost-label">Tuition/Year</div>
+                                <div class="cost-value">€2,000-4,000</div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-label">Living Cost</div>
+                                <div class="cost-value">€400-600/month</div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'services:student_application' %}" class="apply-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Apply for Poland
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Northern Cyprus -->
+            <div class="col-lg-4 col-md-6">
+                <div class="country-card">
+                    <div class="image-carousel">
+                        <div class="carousel-container">
+                            <img src="{% static 'images/cyprus_students1.jpg' %}" alt="African Students in Northern Cyprus University" class="carousel-image">
+                            <img src="{% static 'images/cyprus_students2.jpg' %}" alt="Campus Life in Nicosia" class="carousel-image">
+                            <img src="{% static 'images/cyprus_students3.jpg' %}" alt="Graduation in Northern Cyprus" class="carousel-image">
+                        </div>
+                        <div class="image-overlay"></div>
+                        <div class="carousel-indicators">
+                            <div class="indicator"></div>
+                            <div class="indicator"></div>
+                            <div class="indicator"></div>
+                        </div>
+                    </div>
+                    <div class="country-info">
+                        <h3 class="country-name">
+                            🇹🇷 Northern Cyprus
+                        </h3>
+                        <p class="country-description">
+                            Study in a culturally diverse Mediterranean environment with excellent universities and welcoming communities.
+                        </p>
+                        
+                        <div class="study-highlights">
+                            <div class="highlight-item">
+                                <i class="fas fa-sun"></i>
+                                Beautiful Mediterranean climate
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-mosque"></i>
+                                Muslim-friendly environment
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-globe"></i>
+                                International student community
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-certificate"></i>
+                                Internationally recognized degrees
+                            </div>
+                        </div>
+
+                        <div class="scholarship-info">
+                            <div class="scholarship-title">
+                                <i class="fas fa-award"></i>
+                                Available Scholarships
+                            </div>
+                            <div class="scholarship-details">
+                                • Turkish Government Scholarships<br>
+                                • University Excellence Scholarships<br>
+                                • Merit-based Financial Aid<br>
+                                • Cultural Exchange Programs
+                            </div>
+                        </div>
+
+                        <div class="cost-info">
+                            <div class="cost-item">
+                                <div class="cost-label">Tuition/Year</div>
+                                <div class="cost-value">$3,000-6,000</div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-label">Living Cost</div>
+                                <div class="cost-value">$300-500/month</div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'services:student_application' %}" class="apply-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Apply for Northern Cyprus
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Denmark -->
+            <div class="col-lg-4 col-md-6">
+                <div class="country-card">
+                    <div class="image-carousel">
+                        <div class="carousel-container">
+                            <img src="{% static 'images/denmark_students1.jpg' %}" alt="African Students in Copenhagen University" class="carousel-image">
+                            <img src="{% static 'images/denmark_students2.jpg' %}" alt="Technical University of Denmark" class="carousel-image">
+                            <img src="{% static 'images/denmark_students3.jpg' %}" alt="Student Life in Denmark" class="carousel-image">
+                        </div>
+                        <div class="image-overlay"></div>
+                        <div class="carousel-indicators">
+                            <div class="indicator"></div>
+                            <div class="indicator"></div>
+                            <div class="indicator"></div>
+                        </div>
+                    </div>
+                    <div class="country-info">
+                        <h3 class="country-name">
+                            🇩🇰 Denmark
+                        </h3>
+                        <p class="country-description">
+                            Join one of the world's happiest countries with innovative education systems and excellent career prospects.
+                        </p>
+                        
+                        <div class="study-highlights">
+                            <div class="highlight-item">
+                                <i class="fas fa-lightbulb"></i>
+                                Innovation-focused education system
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-heart"></i>
+                                High quality of life & happiness index
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-language"></i>
+                                English-taught programs available
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-chart-line"></i>
+                                Excellent career opportunities
+                            </div>
+                        </div>
+
+                        <div class="scholarship-info">
+                            <div class="scholarship-title">
+                                <i class="fas fa-award"></i>
+                                Available Scholarships
+                            </div>
+                            <div class="scholarship-details">
+                                • Danish Government Scholarships<br>
+                                • University Tuition Waivers<br>
+                                • Nordplus Exchange Programs<br>
+                                • Research Assistant Positions
+                            </div>
+                        </div>
+
+                        <div class="cost-info">
+                            <div class="cost-item">
+                                <div class="cost-label">Tuition/Year</div>
+                                <div class="cost-value">€6,000-16,000</div>
+                            </div>
+                            <div class="cost-item">
+                                <div class="cost-label">Living Cost</div>
+                                <div class="cost-value">€800-1,200/month</div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'services:student_application' %}" class="apply-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Apply for Denmark
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Future?</h2>
+        <p class="lead mb-4">
+            Take the first step towards your European education journey. Our expert team will guide you through every step of the application process.
+        </p>
+        <a href="{% url 'services:student_application' %}" class="cta-btn">
+            <i class="fas fa-graduation-cap me-2"></i>
+            Start Your Application Today
+        </a>
+    </div>
+</section>
 {% endblock %}
