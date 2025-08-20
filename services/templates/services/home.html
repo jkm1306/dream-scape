@@ -686,70 +686,65 @@
             <h2 class="display-4 fw-bold mb-3" style="color: var(--primary-blue);">Voices of Success</h2>
             <p class="lead text-muted">Stories from our global community</p>
         </div>
+        
         <div class="row">
-            <div class="col-lg-4 mb-4">
-                <div class="service-card h-100">
-                    <div class="mb-3">
-                        <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
-                    </div>
-                    <p class="mb-4">
-                        "DreamScape understood my cultural background and helped me secure a scholarship in Poland. 
-                        They made me feel at home while pursuing my European dreams!"
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                             style="width: 50px; height: 50px; background: var(--primary-blue);">
-                            <span class="text-white fw-bold">MK</span>
+            {% for testimonial in testimonials %}
+                <div class="col-lg-4 mb-4">
+                    <div class="service-card h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
                         </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0" style="color: var(--primary-blue);">Michael Kasonde</h6>
-                            <small class="text-muted">Computer Science Student, Warsaw</small>
+                        <div class="mb-3">
+                            <span style="color: var(--gold); font-size: 1.2rem;">
+                                {{ testimonial.star_display }}
+                            </span>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-                <div class="service-card h-100">
-                    <div class="mb-3">
-                        <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
-                    </div>
-                    <p class="mb-4">
-                        "Our cultural trip to Denmark was incredible! DreamScape ensured we experienced both 
-                        the country's beauty and felt comfortable with our values respected."
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                             style="width: 50px; height: 50px; background: var(--desert-brown);">
-                            <span class="text-white fw-bold">SM</span>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0" style="color: var(--primary-blue);">Sarah Mwanza</h6>
-                            <small class="text-muted">Cultural Explorer & Family Traveler</small>
+                        <p class="mb-4">"{{ testimonial.message }}"</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background: var(--primary-blue);">
+                                <span class="text-white fw-bold">
+                                    {{ testimonial.name.0 }}{% if testimonial.name|length > 1 %}{{ testimonial.name.1 }}{% endif %}
+                                </span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0" style="color: var(--primary-blue);">{{ testimonial.name }}</h6>
+                                <small class="text-muted">{{ testimonial.location }}</small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 mb-4">
-                <div class="service-card h-100">
-                    <div class="mb-3">
-                        <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
-                    </div>
-                    <p class="mb-4">
-                        "From Lusaka to Northern Cyprus - DreamScape made my educational journey smooth. 
-                        They celebrate where I come from while helping me reach where I'm going!"
-                    </p>
-                    <div class="d-flex align-items-center">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                             style="width: 50px; height: 50px; background: var(--gold);">
-                            <span class="text-white fw-bold">JM</span>
+            {% empty %}
+                <!-- Fallback to your existing static testimonials if no database testimonials -->
+                <div class="col-lg-4 mb-4">
+                    <div class="service-card h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
                         </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0" style="color: var(--primary-blue);">John Mubanga</h6>
-                            <small class="text-muted">MBA Graduate, Northern Cyprus</small>
+                        <p class="mb-4">
+                            "DreamScape understood my cultural background and helped me secure a scholarship in Poland. 
+                            They made me feel at home while pursuing my European dreams!"
+                        </p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background: var(--primary-blue);">
+                                <span class="text-white fw-bold">MK</span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0" style="color: var(--primary-blue);">Michael Kasonde</h6>
+                                <small class="text-muted">Computer Science Student, Warsaw</small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!-- Add your other static testimonials here -->
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'services:testimonials' %}" class="btn-cultural-primary">
+                <i class="fas fa-pen me-2"></i>Share Your Experience
+            </a>
         </div>
     </div>
 </section>

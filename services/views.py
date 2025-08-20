@@ -1,19 +1,37 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import StudentApplicationForm, TouristInquiryForm
+from .forms import StudentApplicationForm, TouristInquiryForm, Testimonial, TestimonialForm
 
-# Create your views here.
 def home(request):
-    return render(request, 'services/home.html')
+    # Get approved testimonials for the homepage
+    testimonials = Testimonial.objects.filter(is_approved=True)[:6]  # Show latest 6
+    return render(request, 'services/home.html', {'testimonials': testimonials})
+
+
+def testimonials(request):
+    if request.method == "POST":
+        form = TestimonialForm(request.POST, user=request.user)
+        if form.is_valid():
+            testimonial = form.save(commit=False)
+            if request.user.is_authenticated:
+                testimonial.submitted_by = request.user
+            testimonial.save()
+            messages.success(request, "Thank you for your testimonial! It will be reviewed and published soon.")
+            return redirect("services:testimonials")
+    else:
+        form = TestimonialForm(user=request.user)
+    
+    # Get all approved testimonials for display
+    all_testimonials = Testimonial.objects.filter(is_approved=True)
+    
+    return render(request, "services/testimonials.html", {
+        "form": form, 
+        "testimonials": all_testimonials
+    })
 
 def about(request):
     return render(request, 'services/about.html')
 
-# def service(request):
-#     return render(request, 'services/service.html')
-
-# def contact(request):
-#     return render(request, 'services/contact.html')
 
 def students(request):
     return render(request, 'services/students.html')

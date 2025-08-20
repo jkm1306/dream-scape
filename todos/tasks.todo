@@ -1,7 +1,13 @@
-☐ Work on the home page design. @started(25-08-20 07:46)
-☐ Change the theme design to his desired theme.
-☐ fix the navigation bar to be more appealing.
-☐ fix the footer to be more appealing.
+✔ Work on the home page design. @started(25-08-20 07:46) @done(25-08-20 08:50) @lasted(1h4m56s)
+✔ Change the theme design to his desired theme. @done(25-08-20 08:51)
+✔ fix the navigation bar to be more appealing. @done(25-08-20 08:51)
+✔ fix the footer to be more appealing. @done(25-08-20 08:51)
 ☐ Add actual images on the students and travel card.
-☐ Work on the testimonials, they should be by real users.
-☐ Add the sign in and signup with Google.
+✔ Work on the testimonials, they should be by real users. @started(25-08-20 09:29) @done(25-08-20 09:50) @lasted(21m48s)
+☐ Add the sign in and signup with Google:
+    ☐ After signup with google, just require:
+        ☐ First name.
+        ☐ Last name.
+        ☐ Country.
+        ☐ Phone.
+    
