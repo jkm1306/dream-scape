@@ -1,13 +1,767 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Home - DreamScape{% endblock %}
+{% block title %}DreamScape - Your Gateway to Adventure & Education{% endblock %}
 
 {% block content %}
-<div class="text-center mt-5">
-    <h1>{{ welcome_message }}</h1>
-    <p class="lead">Explore our products and services tailored just for you.</p>
-    {% comment %}
-    <a href="{% url 'services:service' %}" class="btn btn-primary mt-3">View Services</a>
-    {% endcomment %}
+<style>
+/* Add this to fix the white space issue */
+.hero-carousel {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+}
+
+/* Alternative approach - override the container */
+.full-width-hero {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+/* Or use this simpler approach */
+.hero-section-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+}
+
+/* Your existing styles remain the same */
+:root {
+    --primary-blue: #1e3a8a;
+    --light-blue: #3b82f6;
+    --desert-brown: #d2691e;
+    --light-brown: #f4a460;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+/* Update carousel styles */
+.carousel-item {
+    height: 100vh;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100vw; /* Ensure full viewport width */
+}
+
+.carousel-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg, 
+        rgba(30, 58, 138, 0.8) 0%, 
+        rgba(210, 105, 30, 0.7) 50%, 
+        rgba(30, 58, 138, 0.8) 100%
+    );
+    z-index: 1;
+}
+
+.carousel-item.student-slide {
+    background-image: url('{% static "images/students.jpg" %}');
+}
+
+.carousel-item.tourist-slide {
+    background-image: url('{% static "images/tourists.jpg" %}');
+}
+
+.carousel-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 2;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.carousel-content h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.carousel-content .lead {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cultural-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, var(--cream) 1px, transparent 1px);
+    background-size: 100px 100px, 50px 50px;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.btn-cultural-primary {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--light-brown) 100%);
+    border: none;
+    color: white;
+    padding: 18px 45px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 10px;
+    box-shadow: 0 8px 25px rgba(210, 105, 30, 0.3);
+}
+
+.btn-cultural-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(210, 105, 30, 0.4);
+    color: white;
+    background: linear-gradient(135deg, var(--light-brown) 0%, var(--desert-brown) 100%);
+}
+
+.btn-cultural-secondary {
+    background: transparent;
+    border: 3px solid var(--gold);
+    color: var(--gold);
+    padding: 15px 42px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    margin: 10px;
+}
+
+.btn-cultural-secondary:hover {
+    background: var(--gold);
+    color: var(--primary-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(251, 191, 36, 0.3);
+}
+
+.carousel-indicators {
+    bottom: 30px;
+    z-index: 3;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    background-color: transparent;
+    opacity: 0.7;
+    margin: 0 8px;
+}
+
+.carousel-indicators .active {
+    background-color: var(--gold);
+    opacity: 1;
+}
+
+.floating-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(251, 191, 36, 0.3);
+    border-radius: 25px;
+    padding: 35px;
+    margin: 20px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.floating-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--gold), var(--desert-brown), var(--primary-blue));
+    border-radius: 25px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.floating-card:hover::before {
+    opacity: 1;
+}
+
+.floating-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.service-card {
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    border-radius: 25px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(30, 58, 138, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.service-card:hover::before {
+    left: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 25px 50px rgba(30, 58, 138, 0.15);
+    border-color: var(--desert-brown);
+}
+
+.service-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 25px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.country-card {
+    background: linear-gradient(135deg, white 0%, var(--cream) 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(30, 58, 138, 0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 30px;
+    border: 3px solid transparent;
+}
+
+.country-card:hover {
+    transform: scale(1.05) rotate(1deg);
+    border-color: var(--desert-brown);
+}
+
+.stats-section {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+    padding: 80px 0;
+    color: white;
+    position: relative;
+}
+
+.stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, var(--gold) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, var(--cream) 1px, transparent 1px);
+    background-size: 80px 80px, 40px 40px;
+    opacity: 0.1;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-number {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--gold);
+    display: block;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cta-section {
+    background: linear-gradient(135deg, var(--desert-brown) 0%, var(--primary-blue) 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+}
+
+.slide-content {
+    animation: slideInUp 1s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+}
+
+.feature-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.3);
+    position: relative;
+    padding-left: 30px;
+}
+
+.feature-list li:before {
+    content: '✓';
+    color: var(--gold);
+    font-weight: bold;
+    font-size: 18px;
+    position: absolute;
+    left: 0;
+    top: 12px;
+}
+
+@media (max-width: 768px) {
+    .carousel-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .carousel-content .lead {
+        font-size: 1.2rem;
+    }
+    
+    .hero-carousel {
+        height: 80vh;
+    }
+    
+    .carousel-item {
+        height: 80vh;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}
+</style>
+
+<!-- Updated Hero Carousel Section -->
+<div class="hero-section-container"> <!-- Remove any container constraints -->
+    <section class="hero-carousel full-width-hero">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            </div>
+            
+            <div class="carousel-inner">
+                <!-- Student Slide -->
+                <div class="carousel-item active student-slide">
+                    <div class="cultural-pattern"></div>
+                    <div class="carousel-content">
+                        <div class="slide-content">
+                            <h1 class="display-2 fw-bold mb-4">
+                                Unlock Your 
+                                <span style="color: var(--gold);">Academic</span> Future
+                            </h1>
+                            <p class="lead mb-4">
+                                Discover world-class education opportunities in Poland, Northern Cyprus, and Denmark. 
+                                Your scholarship journey to European excellence starts here.
+                            </p>
+                            <div class="d-flex flex-wrap justify-content-center">
+                                <a href="{% url 'services:students' %}" class="btn-cultural-primary">
+                                    <i class="fas fa-graduation-cap me-2"></i>Explore Scholarships
+                                </a>
+                                <a href="{% url 'services:student_application' %}" class="btn-cultural-secondary">
+                                    <i class="fas fa-file-alt me-2"></i>Apply Now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tourist Slide -->
+                <div class="carousel-item tourist-slide">
+                    <div class="cultural-pattern"></div>
+                    <div class="carousel-content">
+                        <div class="slide-content">
+                            <h1 class="display-2 fw-bold mb-4">
+                                Experience 
+                                <span style="color: var(--gold);">Cultural</span> Wonders
+                            </h1>
+                            <p class="lead mb-4">
+                                Embark on extraordinary journeys to breathtaking destinations. 
+                                Let us craft unforgettable travel experiences that create lasting memories.
+                            </p>
+                            <div class="d-flex flex-wrap justify-content-center">
+                                <a href="{% url 'services:tourists' %}" class="btn-cultural-primary">
+                                    <i class="fas fa-plane me-2"></i>Discover Destinations
+                                </a>
+                                <a href="{% url 'services:tourist_inquiry' %}" class="btn-cultural-secondary">
+                                    <i class="fas fa-compass me-2"></i>Plan Your Trip
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
 </div>
+
+<!-- Why Choose Us Section -->
+<section class="py-5" style="background: linear-gradient(135deg, var(--cream) 0%, white 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="display-4 fw-bold mb-4" style="color: var(--primary-blue);">
+                    Why Choose DreamScape?
+                </h2>
+                <p class="lead text-muted mb-4">
+                    We blend cultural heritage with modern excellence to deliver exceptional experiences in education and travel.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class="floating-card">
+                    <h4 class="mb-3" style="color: var(--gold);">
+                        <i class="fas fa-star me-2"></i>Our Promise to You
+                    </h4>
+                    <ul class="feature-list">
+                        <li>Expert guidance rooted in cultural understanding</li>
+                        <li>Comprehensive support from application to arrival</li>
+                        <li>24/7 multilingual customer service</li>
+                        <li>Affordable packages with flexible payment plans</li>
+                        <li>Trusted by thousands across Africa and beyond</li>
+                        <li>Cultural orientation and integration support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold mb-3" style="color: var(--primary-blue);">Our Cultural Bridge</h2>
+            <p class="lead text-muted">Connecting dreams with destinations through heritage and excellence</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h3 class="h4 mb-3" style="color: var(--primary-blue);">Cultural Travel Experiences</h3>
+                    <p class="text-muted mb-4">
+                        Immerse yourself in authentic cultural experiences while exploring breathtaking destinations. 
+                        Our travel packages celebrate both your heritage and new discoveries.
+                    </p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Culturally-sensitive itinerary planning</li>
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Heritage site visits and local experiences</li>
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Halal-friendly accommodation options</li>
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Comprehensive travel insurance</li>
+                    </ul>
+                    <a href="{% url 'services:tourists' %}" class="btn-cultural-primary mt-3">Begin Your Journey</a>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="h4 mb-3" style="color: var(--primary-blue);">European Education Gateway</h3>
+                    <p class="text-muted mb-4">
+                        Bridge the gap between African excellence and European education. 
+                        We understand your background and help you thrive in international academic environments.
+                    </p>
+                    <ul class="list-unstyled text-start">
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Personalized scholarship matching</li>
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Cultural adaptation guidance</li>
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Visa and documentation support</li>
+                        <li><i class="fas fa-check me-2" style="color: var(--desert-brown);"></i>Alumni mentorship network</li>
+                    </ul>
+                    <a href="{% url 'services:students' %}" class="btn-cultural-primary mt-3">Start Your Education Journey</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Countries Section -->
+<section class="py-5" style="background: linear-gradient(135deg, var(--cream) 0%, #f8f9fa 100%);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold mb-3" style="color: var(--primary-blue);">Premium Study Destinations</h2>
+            <p class="lead text-muted">Where tradition meets innovation in world-class education</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="country-card">
+                    <div class="country-flag poland-flag"></div>
+                    <div class="p-4">
+                        <h4 class="fw-bold mb-3" style="color: var(--primary-blue);">
+                            <i class="fas fa-map-marker-alt me-2" style="color: var(--desert-brown);"></i>Poland
+                        </h4>
+                        <p class="text-muted mb-3">
+                            Rich in history and modern in approach. Polish universities offer exceptional value 
+                            with strong cultural ties and affordable world-class education.
+                        </p>
+                        <div class="d-flex justify-content-between text-small mb-3">
+                            <span><i class="fas fa-university me-1" style="color: var(--gold);"></i>200+ Universities</span>
+                            <span><i class="fas fa-euro-sign me-1" style="color: var(--gold);"></i>Affordable Tuition</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="country-card">
+                    <div class="country-flag cyprus-flag"></div>
+                    <div class="p-4">
+                        <h4 class="fw-bold mb-3" style="color: var(--primary-blue);">
+                            <i class="fas fa-map-marker-alt me-2" style="color: var(--desert-brown);"></i>Northern Cyprus
+                        </h4>
+                        <p class="text-muted mb-3">
+                            Mediterranean charm meets academic excellence. Perfect climate, English programs, 
+                            and a welcoming multicultural environment.
+                        </p>
+                        <div class="d-flex justify-content-between text-small mb-3">
+                            <span><i class="fas fa-sun me-1" style="color: var(--gold);"></i>Perfect Climate</span>
+                            <span><i class="fas fa-language me-1" style="color: var(--gold);"></i>English Teaching</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mx-auto">
+                <div class="country-card">
+                    <div class="country-flag denmark-flag"></div>
+                    <div class="p-4">
+                        <h4 class="fw-bold mb-3" style="color: var(--primary-blue);">
+                            <i class="fas fa-map-marker-alt me-2" style="color: var(--desert-brown);"></i>Denmark
+                        </h4>
+                        <p class="text-muted mb-3">
+                            Innovation capital of Europe. Join a society that values equality, sustainability, 
+                            and cutting-edge research in a supportive environment.
+                        </p>
+                        <div class="d-flex justify-content-between text-small mb-3">
+                            <span><i class="fas fa-award me-1" style="color: var(--gold);"></i>World Ranked</span>
+                            <span><i class="fas fa-heart me-1" style="color: var(--gold);"></i>Quality Life</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">3,500+</span>
+                    <h5 class="fw-bold">Cultural Journeys</h5>
+                    <p class="text-light">Meaningful travel experiences created</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">2,100+</span>
+                    <h5 class="fw-bold">Scholarships Secured</h5>
+                    <p class="text-light">African students studying in Europe</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">75+</span>
+                    <h5 class="fw-bold">Global Destinations</h5>
+                    <p class="text-light">Countries across continents</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">99%</span>
+                    <h5 class="fw-bold">Cultural Satisfaction</h5>
+                    <p class="text-light">Clients who felt culturally supported</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="display-4 fw-bold mb-4">Your Heritage, Your Future</h2>
+                <p class="lead mb-4">
+                    Embrace your cultural identity while pursuing global opportunities. 
+                    DreamScape bridges traditions with aspirations, making your journey meaningful and successful.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'services:tourist_inquiry' %}" class="btn-cultural-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Plan Cultural Journey
+                        </a>
+                        <a href="{% url 'services:student_application' %}" class="btn-cultural-secondary">
+                            <i class="fas fa-graduation-cap me-2"></i>Apply for Scholarship
+                        </a>
+                    {% else %}
+                        <a href="{% url 'users:signup' %}" class="btn-cultural-primary">
+                            <i class="fas fa-user-plus me-2"></i>Join Our Community
+                        </a>
+                        <a href="{% url 'users:login' %}" class="btn-cultural-secondary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Access Your Journey
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="mt-4">
+                    <small class="text-light">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Culturally conscious • Globally connected • Locally trusted • 24/7 support
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5" style="background: linear-gradient(135deg, white 0%, var(--cream) 100%);">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold mb-3" style="color: var(--primary-blue);">Voices of Success</h2>
+            <p class="lead text-muted">Stories from our global community</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="service-card h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
+                    </div>
+                    <p class="mb-4">
+                        "DreamScape understood my cultural background and helped me secure a scholarship in Poland. 
+                        They made me feel at home while pursuing my European dreams!"
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px; background: var(--primary-blue);">
+                            <span class="text-white fw-bold">MK</span>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0" style="color: var(--primary-blue);">Michael Kasonde</h6>
+                            <small class="text-muted">Computer Science Student, Warsaw</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
+                    </div>
+                    <p class="mb-4">
+                        "Our cultural trip to Denmark was incredible! DreamScape ensured we experienced both 
+                        the country's beauty and felt comfortable with our values respected."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px; background: var(--desert-brown);">
+                            <span class="text-white fw-bold">SM</span>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0" style="color: var(--primary-blue);">Sarah Mwanza</h6>
+                            <small class="text-muted">Cultural Explorer & Family Traveler</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card h-100">
+                    <div class="mb-3">
+                        <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
+                    </div>
+                    <p class="mb-4">
+                        "From Lusaka to Northern Cyprus - DreamScape made my educational journey smooth. 
+                        They celebrate where I come from while helping me reach where I'm going!"
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px; background: var(--gold);">
+                            <span class="text-white fw-bold">JM</span>
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0" style="color: var(--primary-blue);">John Mubanga</h6>
+                            <small class="text-muted">MBA Graduate, Northern Cyprus</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Auto-start carousel with smooth transitions
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = new bootstrap.Carousel(document.getElementById('heroCarousel'), {
+        interval: 6000,
+        wrap: true,
+        touch: true
+    });
+});
+</script>
 {% endblock %}
