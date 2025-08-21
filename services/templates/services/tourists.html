@@ -281,9 +281,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/victoria.png' %}" alt="Victoria Falls" class="carousel-image">
-                            <img src="{% static 'images/city.jpg' %}" alt="Lusaka City" class="carousel-image">
-                            <img src="{% static 'images/kafue.jpg' %}" alt="Kafue National Park" class="carousel-image">
+                            <img src="{% static 'images/zambia/victoria.png' %}" alt="Victoria Falls" class="carousel-image">
+                            <img src="{% static 'images/zambia/city.jpg' %}" alt="Lusaka City" class="carousel-image">
+                            <img src="{% static 'images/zambia/kafue.jpg' %}" alt="Kafue National Park" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -313,7 +313,7 @@
                                 Lusaka Cultural Heritage
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=zambia" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -325,9 +325,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/ghana1.jpg' %}" alt="Cape Coast Castle" class="carousel-image">
-                            <img src="{% static 'images/ghana2.jpg' %}" alt="Accra Markets" class="carousel-image">
-                            <img src="{% static 'images/ghana3.jpg' %}" alt="Kakum National Park" class="carousel-image">
+                            <img src="{% static 'images/ghana/castle.jpg' %}" alt="Cape Coast Castle" class="carousel-image">
+                            <img src="{% static 'images/ghana/accra.jpg' %}" alt="Accra Markets" class="carousel-image">
+                            <img src="{% static 'images/ghana/kakum.jpg' %}" alt="Kakum National Park" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -357,7 +357,7 @@
                                 Kumasi Traditional Arts
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=ghana" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -369,9 +369,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/eswatini1.jpg' %}" alt="Hlane Royal National Park" class="carousel-image">
-                            <img src="{% static 'images/eswatini2.jpg' %}" alt="Mbabane City" class="carousel-image">
-                            <img src="{% static 'images/eswatini3.jpg' %}" alt="Traditional Swazi Culture" class="carousel-image">
+                            <img src="{% static 'images/eswatini/cultural.jpg' %}" alt="Hlane Royal National Park" class="carousel-image">
+                            <img src="{% static 'images/eswatini/mbabane.jpg' %}" alt="Mbabane City" class="carousel-image">
+                            <img src="{% static 'images/eswatini/national_park.jpg' %}" alt="Traditional Swazi Culture" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -401,7 +401,7 @@
                                 Hlane Royal National Park
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=eswatini" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -413,9 +413,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/zimbabwe1.jpg' %}" alt="Great Zimbabwe Ruins" class="carousel-image">
-                            <img src="{% static 'images/zimbabwe2.jpg' %}" alt="Hwange National Park" class="carousel-image">
-                            <img src="{% static 'images/zimbabwe3.jpg' %}" alt="Harare City" class="carousel-image">
+                            <img src="{% static 'images/zimbabwe/great_zimbabwe.jpg' %}" alt="Great Zimbabwe Ruins" class="carousel-image">
+                            <img src="{% static 'images/zimbabwe/park.jpg' %}" alt="Hwange National Park" class="carousel-image">
+                            <img src="{% static 'images/zimbabwe/harare.jpg' %}" alt="Harare City" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -445,7 +445,7 @@
                                 Victoria Falls (Zimbabwe Side)
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=zimbabwe" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -457,9 +457,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/china1.jpg' %}" alt="Great Wall of China" class="carousel-image">
-                            <img src="{% static 'images/china2.jpg' %}" alt="Forbidden City" class="carousel-image">
-                            <img src="{% static 'images/china3.jpg' %}" alt="Shanghai Skyline" class="carousel-image">
+                            <img src="{% static 'images/china/great_wall.jpg' %}" alt="Great Wall of China" class="carousel-image">
+                            <img src="{% static 'images/china/forbidden_city.jpg' %}" alt="Forbidden City" class="carousel-image">
+                            <img src="{% static 'images/china/shanghai.jpg' %}" alt="Shanghai Skyline" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -489,7 +489,7 @@
                                 Shanghai & Modern China
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=china" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -501,9 +501,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/dubai1.jpg' %}" alt="Burj Khalifa" class="carousel-image">
-                            <img src="{% static 'images/dubai2.jpg' %}" alt="Dubai Mall" class="carousel-image">
-                            <img src="{% static 'images/dubai3.jpg' %}" alt="Desert Safari" class="carousel-image">
+                            <img src="{% static 'images/dubai/city.png' %}" alt="Burj Khalifa" class="carousel-image">
+                            <img src="{% static 'images/dubai/mall.jpg' %}" alt="Dubai Mall" class="carousel-image">
+                            <img src="{% static 'images/dubai/desert.jpg' %}" alt="Desert Safari" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -533,7 +533,7 @@
                                 Desert Safari & Dhow Cruise
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=dubai" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -545,9 +545,9 @@
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/nigeria1.jpg' %}" alt="Lagos Skyline" class="carousel-image">
-                            <img src="{% static 'images/nigeria2.jpg' %}" alt="Abuja National Mosque" class="carousel-image">
-                            <img src="{% static 'images/nigeria3.jpg' %}" alt="Kano Ancient City" class="carousel-image">
+                            <img src="{% static 'images/nigeria/lagos.jpg' %}" alt="Lagos Skyline" class="carousel-image">
+                            <img src="{% static 'images/nigeria/abuja.jpg' %}" alt="Abuja National Mosque" class="carousel-image">
+                            <img src="{% static 'images/nigeria/kano.jpg' %}" alt="Kano Ancient City" class="carousel-image">
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
@@ -577,7 +577,7 @@
                                 Cultural Heritage & Nollywood
                             </div>
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination=nigeria" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>

@@ -46,7 +46,7 @@ class TouristInquiryForm(forms.ModelForm):
         model = TouristInquiry
         fields = [
             "first_name", "last_name", "email", "phone", 
-            "destination", "travel_date", 
+            "preferred_destination", "destination_details", "travel_date", 
             "number_of_people", "notes"
         ]
         widgets = {
@@ -54,7 +54,8 @@ class TouristInquiryForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your last name'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'your.email@example.com'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+260 XXX XXX XXX'}),
-            'destination': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Nicosia, Kyrenia, Famagusta'}),
+            'preferred_destination': forms.Select(attrs={'class': 'form-control'}),
+            'destination_details': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Victoria Falls, Lusaka, Traditional villages'}),
             'travel_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'number_of_people': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of travelers', 'min': '1', 'max': '20'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Tell us about special requirements, dietary needs, cultural preferences, or specific experiences you are looking for...'}),
@@ -62,6 +63,7 @@ class TouristInquiryForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
+        destination = kwargs.pop('destination', None)
         super().__init__(*args, **kwargs)
         
         if user and user.is_authenticated:
@@ -70,6 +72,10 @@ class TouristInquiryForm(forms.ModelForm):
             self.fields['last_name'].initial = user.last_name
             self.fields['phone'].initial = user.phone
             self.fields['email'].initial = user.email
+        
+        # Pre-select destination if provided
+        if destination:
+            self.fields['preferred_destination'].initial = destination
 
 
 class TestimonialForm(forms.ModelForm):

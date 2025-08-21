@@ -176,6 +176,15 @@
     color: var(--desert-brown);
 }
 
+.destination-alert {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(210, 105, 30, 0.1) 100%);
+    border: 1px solid var(--gold);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: var(--primary-blue);
+}
+
 .travel-preview {
     background: linear-gradient(135deg, var(--cream) 0%, white 100%);
     border-radius: 15px;
@@ -207,9 +216,12 @@
         <h1 class="display-4 fw-bold mb-4">
             <i class="fas fa-plane me-3"></i>
             Tourist Inquiry
+            {% if destination_display %}
+                - {{ destination_display }}
+            {% endif %}
         </h1>
         <p class="lead">
-            Discover the hidden gems of Northern Cyprus with cultural sensitivity
+            Discover amazing destinations with culturally sensitive travel experiences
         </p>
     </div>
 </section>
@@ -232,6 +244,14 @@
                         <div class="info-alert">
                             <i class="fas fa-info-circle me-2"></i>
                             <strong>Welcome back!</strong> Your profile information has been pre-filled. You can modify any field as needed.
+                        </div>
+                    {% endif %}
+
+                    {% if destination_display %}
+                        <div class="destination-alert">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>Selected Destination:</strong> You've chosen <strong>{{ destination_display }}</strong> as your travel destination. 
+                            You can change this selection in the form below if needed.
                         </div>
                     {% endif %}
 
@@ -291,13 +311,16 @@
                             </h4>
                             
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="{{ form.destination.id_for_label }}" class="form-label">Preferred Destination</label>
-                                        {{ form.destination }}
+                                        <label for="{{ form.preferred_destination.id_for_label }}" class="form-label">Preferred Destination</label>
+                                        {{ form.preferred_destination }}
+                                        <small class="text-muted d-block mt-1">
+                                            Select your preferred travel destination
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="{{ form.number_of_people.id_for_label }}" class="form-label">Number of People</label>
                                         {{ form.number_of_people }}
@@ -305,12 +328,25 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="{{ form.travel_date.id_for_label }}" class="form-label">Preferred Travel Date</label>
-                                {{ form.travel_date }}
-                                <small class="text-muted d-block mt-1">
-                                    Please provide your preferred travel date or date range
-                                </small>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.destination_details.id_for_label }}" class="form-label">Specific Places/Attractions</label>
+                                        {{ form.destination_details }}
+                                        <small class="text-muted d-block mt-1">
+                                            Specific cities, attractions, or experiences you'd like to include
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.travel_date.id_for_label }}" class="form-label">Preferred Travel Date</label>
+                                        {{ form.travel_date }}
+                                        <small class="text-muted d-block mt-1">
+                                            Your preferred travel date
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -337,12 +373,12 @@
                                 <div class="col-md-4 text-center mb-3">
                                     <i class="fas fa-mosque fa-2x" style="color: var(--gold); margin-bottom: 10px;"></i>
                                     <h6 style="color: var(--primary-blue);">Cultural Sites</h6>
-                                    <small class="text-muted">Historic mosques and cultural landmarks</small>
+                                    <small class="text-muted">Historic landmarks and cultural experiences</small>
                                 </div>
                                 <div class="col-md-4 text-center mb-3">
                                     <i class="fas fa-utensils fa-2x" style="color: var(--gold); margin-bottom: 10px;"></i>
-                                    <h6 style="color: var(--primary-blue);">Halal Dining</h6>
-                                    <small class="text-muted">Authentic halal cuisine experiences</small>
+                                    <h6 style="color: var(--primary-blue);">Local Cuisine</h6>
+                                    <small class="text-muted">Authentic local dining experiences</small>
                                 </div>
                                 <div class="col-md-4 text-center mb-3">
                                     <i class="fas fa-hands-praying fa-2x" style="color: var(--gold); margin-bottom: 10px;"></i>

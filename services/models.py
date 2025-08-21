@@ -41,11 +41,22 @@ class StudentApplication(models.Model):
 
 
 class TouristInquiry(models.Model):
+    DESTINATION_CHOICES = [
+        ('zambia', 'Zambia'),
+        ('ghana', 'Ghana'),
+        ('eswatini', 'Eswatini'),
+        ('zimbabwe', 'Zimbabwe'),
+        ('china', 'China'),
+        ('dubai', 'Dubai, UAE'),
+        ('nigeria', 'Nigeria'),
+    ]
+
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    destination = models.CharField(max_length=255)
+    preferred_destination = models.CharField(max_length=20, choices=DESTINATION_CHOICES, help_text="Your preferred travel destination")
+    destination_details = models.CharField(max_length=255, blank=True, null=True, help_text="Specific cities or attractions you'd like to visit")
     travel_date = models.DateField()
     number_of_people = models.PositiveIntegerField()
     notes = models.TextField(blank=True, null=True)
@@ -53,7 +64,7 @@ class TouristInquiry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Inquiry - {self.first_name} {self.last_name} ({self.destination})"
+        return f"Inquiry - {self.first_name} {self.last_name} ({self.get_preferred_destination_display()})"
 
     @property
     def full_name(self):

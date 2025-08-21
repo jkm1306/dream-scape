@@ -70,15 +70,29 @@ def student_application_view(request):
 
 
 def tourist_inquiry_view(request):
+    # Get the destination from URL parameter
+    destination = request.GET.get('destination', None)
+    
     if request.method == "POST":
-        form = TouristInquiryForm(request.POST, user=request.user)
+        form = TouristInquiryForm(request.POST, user=request.user, destination=destination)
         if form.is_valid():
             inquiry = form.save(commit=False)
             if request.user.is_authenticated:
                 inquiry.submitted_by = request.user
             inquiry.save()
-            messages.success(request, "Your inquiry has been submitted successfully.")
+            messages.success(request, "Your travel inquiry has been submitted successfully. Our team will contact you soon to plan your perfect trip!")
             return redirect("services:home")
     else:
-        form = TouristInquiryForm(user=request.user)
-    return render(request, "services/tourist_inquiry.html", {"form": form})
+        form = TouristInquiryForm(user=request.user, destination=destination)
+    
+    # Get destination display name for template
+    destination_display = None
+    if destination:
+        destination_choices = dict(form.fields['preferred_destination'].choices)
+        destination_display = destination_choices.get(destination, destination.title())
+    
+    return render(request, "services/tourist_inquiry.html", {
+        "form": form,
+        "selected_destination": destination,
+        "destination_display": destination_display
+    })
