@@ -11,12 +11,19 @@ class StudentApplication(models.Model):
         (POSTGRAD, "Postgraduate"),
         (UNDERGRAD, "Undergraduate"),
     ]
+    
+    COUNTRY_CHOICES = [
+        ('poland', 'Poland'),
+        ('northern_cyprus', 'Northern Cyprus'),
+        ('denmark', 'Denmark'),
+    ]
 
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     sex = models.CharField(max_length=10, choices=[("Male", "Male"), ("Female", "Female")])
     age = models.PositiveIntegerField()
     study_level = models.CharField(max_length=20, choices=STUDY_LEVEL_CHOICES)
+    preferred_country = models.CharField(max_length=20, choices=COUNTRY_CHOICES, help_text="Your preferred study destination")
     course_of_interest = models.CharField(max_length=255)
     passport_or_nrc = models.CharField(max_length=50, unique=True)
     phone = models.CharField(max_length=20)
@@ -26,7 +33,7 @@ class StudentApplication(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Application - {self.first_name} {self.last_name} ({self.study_level})"
+        return f"Application - {self.first_name} {self.last_name} ({self.get_preferred_country_display()})"
 
     @property
     def full_name(self):
@@ -51,7 +58,6 @@ class TouristInquiry(models.Model):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}".strip()
-
 
 
 class Testimonial(models.Model):
@@ -89,5 +95,3 @@ class Testimonial(models.Model):
     @property
     def star_display(self):
         return '★' * self.rating + '☆' * (5 - self.rating)
-
-# Your existing models remain the same...

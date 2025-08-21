@@ -40,19 +40,33 @@ def tourists(request):
     return render(request, 'services/tourists.html')
 
 
-
 def student_application_view(request):
+    # Get the country from URL parameter
+    country = request.GET.get('country', None)
+    
     if request.method == "POST":
-        form = StudentApplicationForm(request.POST, user=request.user)
+        form = StudentApplicationForm(request.POST, user=request.user, country=country)
         if form.is_valid():
             application = form.save(commit=False)
-            application.submitted_by = request.user
+            if request.user.is_authenticated:
+                application.submitted_by = request.user
             application.save()
-            messages.success(request, "Your scholarship application has been submitted successfully.")
+            messages.success(request, "Your scholarship application has been submitted successfully. Our team will review your application and contact you soon!")
             return redirect("services:home")
     else:
-        form = StudentApplicationForm(user=request.user)
-    return render(request, "services/student_application.html", {"form": form})
+        form = StudentApplicationForm(user=request.user, country=country)
+    
+    # Get country display name for template
+    country_display = None
+    if country:
+        country_choices = dict(form.fields['preferred_country'].choices)
+        country_display = country_choices.get(country, country.title())
+    
+    return render(request, "services/student_application.html", {
+        "form": form,
+        "selected_country": country,
+        "country_display": country_display
+    })
 
 
 def tourist_inquiry_view(request):
@@ -60,7 +74,8 @@ def tourist_inquiry_view(request):
         form = TouristInquiryForm(request.POST, user=request.user)
         if form.is_valid():
             inquiry = form.save(commit=False)
-            inquiry.submitted_by = request.user
+            if request.user.is_authenticated:
+                inquiry.submitted_by = request.user
             inquiry.save()
             messages.success(request, "Your inquiry has been submitted successfully.")
             return redirect("services:home")

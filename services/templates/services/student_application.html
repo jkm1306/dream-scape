@@ -4,7 +4,9 @@
 {% block title %}Student Application - DreamScape Agency{% endblock %}
 
 {% block content %}
+<!-- Keep your existing styles -->
 <style>
+<!-- Your existing CSS styles remain the same -->
 :root {
     --primary-blue: #1e3a8a;
     --desert-brown: #d2691e;
@@ -176,24 +178,13 @@
     color: var(--primary-blue);
 }
 
-.progress-indicator {
-    display: flex;
-    justify-content: center;
+.country-alert {
+    background: linear-gradient(135deg, rgba(210, 105, 30, 0.1) 0%, rgba(251, 191, 36, 0.1) 100%);
+    border: 1px solid var(--desert-brown);
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 30px;
-}
-
-.progress-step {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--gold);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    margin: 0 10px;
-    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    color: var(--desert-brown);
 }
 
 @media (max-width: 768px) {
@@ -219,6 +210,9 @@
         <h1 class="display-4 fw-bold mb-4">
             <i class="fas fa-graduation-cap me-3"></i>
             Student Application
+            {% if country_display %}
+                - {{ country_display }}
+            {% endif %}
         </h1>
         <p class="lead">
             Take the first step towards your academic dreams in Europe
@@ -246,6 +240,23 @@
                             <strong>Welcome back!</strong> Your profile information has been pre-filled. You can modify any field as needed.
                         </div>
                     {% endif %}
+
+                    {% if country_display %}
+                        <div class="country-alert">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>Preferred Destination:</strong> You've selected <strong>{{ country_display }}</strong> as your preferred study destination. 
+                            You can change this selection in the form below if needed.
+                        </div>
+                    {% endif %}
+
+                    <!-- Important Notice -->
+                    <div class="info-alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Important Notice:</strong> While we'll do our best to place you in your preferred country, final placement depends on scholarship availability, 
+                        university admission requirements, and your academic profile. You may be offered opportunities in any of our partner countries 
+                        (Poland, Northern Cyprus, or Denmark) based on the best fit for your academic goals. All our destinations offer excellent education 
+                        and cultural experiences!
+                    </div>
 
                     {% if messages %}
                         {% for message in messages %}
@@ -329,6 +340,14 @@
                             <h4 class="section-title">
                                 <i class="fas fa-book"></i>Academic Information
                             </h4>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.preferred_country.id_for_label }}" class="form-label">Preferred Study Destination</label>
+                                {{ form.preferred_country }}
+                                <small class="text-muted d-block mt-1">
+                                    Select your preferred country. Final placement depends on scholarship availability and admission requirements.
+                                </small>
+                            </div>
                             
                             <div class="form-group">
                                 <label for="{{ form.course_of_interest.id_for_label }}" class="form-label">Course of Interest</label>
