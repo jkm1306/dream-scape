@@ -1,3 +1,4 @@
+--Phase 1:
 ✔ Work on the home page design. @started(25-08-20 07:46) @done(25-08-20 08:50) @lasted(1h4m56s)
 ✔ Change the theme design to his desired theme. @done(25-08-20 08:51)
 ✔ fix the navigation bar to be more appealing. @done(25-08-20 08:51)
@@ -5,6 +6,14 @@
 ✔ Work on the testimonials, they should be by real users. @started(25-08-20 09:29) @done(25-08-20 09:50) @lasted(21m48s)
 ✔ Add the profile after signup. @done(25-08-21 02:01)
 
+--Phase 2:
+✔ Customize the models in the home app to just deal with images only. @started(25-08-22 23:01) @done(25-08-22 23:18) @lasted(17m14s)
+☐ The attraction of the tourists should be page. First, after a country, sites in that county, and then the detials of those sites.
+☐ Tap on a country, after a country, see visually enticing stuff about studying there, and then click apply.
+☐ Add a country detail to the tourists page.
+☐ Be able to add as many images as possible.
+
+--Phase 3:
 ☐ Add interested school dusring student application.
 ☐ Add the sign in and signup with Google:
     ☐ After signup with google, just require:
@@ -12,9 +21,5 @@
         ☐ Last name.
         ☐ Country.
         ☐ Phone.
-
-✔ Customize the models in the home app to just deal with images only. @started(25-08-22 23:01) @done(25-08-22 23:18) @lasted(17m14s)
-☐ Add a country detail to the tourists page.
-☐ Be able to add as many images as possible.
 
     
