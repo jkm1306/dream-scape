@@ -321,7 +321,7 @@
                             </div>
                             {% endif %}
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination={{ destination.name|slugify }}" class="inquiry-btn">
+                        <a href="{% url 'student_travel:tourist_inquiry' %}?destination={{ destination.name|slugify }}" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
@@ -339,7 +339,7 @@
         <p class="lead mb-4">
             Let us help you create unforgettable memories with culturally sensitive and enriching travel experiences.
         </p>
-        <a href="{% url 'services:tourist_inquiry' %}" class="cta-btn">
+        <a href="{% url 'student_travel:tourist_inquiry' %}" class="cta-btn">
             <i class="fas fa-paper-plane me-2"></i>
             Submit Your Travel Inquiry
         </a>
