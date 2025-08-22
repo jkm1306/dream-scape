@@ -1,11 +1,30 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import StudentApplicationForm, TouristInquiryForm, Testimonial, TestimonialForm
+from .models import CarouselImage
 
 def home(request):
     # Get approved testimonials for the homepage
     testimonials = Testimonial.objects.filter(is_approved=True)[:6]  # Show latest 6
-    return render(request, 'services/home.html', {'testimonials': testimonials})
+    
+    # Get carousel images
+    carousel_images = {}
+    try:
+        student_image = CarouselImage.objects.get(slide_type='student', is_active=True)
+        carousel_images['student'] = student_image
+    except CarouselImage.DoesNotExist:
+        carousel_images['student'] = None
+    
+    try:
+        tourist_image = CarouselImage.objects.get(slide_type='tourist', is_active=True)
+        carousel_images['tourist'] = tourist_image
+    except CarouselImage.DoesNotExist:
+        carousel_images['tourist'] = None
+    
+    return render(request, 'services/home.html', {
+        'testimonials': testimonials,
+        'carousel_images': carousel_images
+    })
 
 
 def testimonials(request):

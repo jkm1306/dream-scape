@@ -106,3 +106,35 @@ class Testimonial(models.Model):
     @property
     def star_display(self):
         return '★' * self.rating + '☆' * (5 - self.rating)
+    
+
+
+
+class CarouselImage(models.Model):
+    SLIDE_CHOICES = [
+        ('student', 'Student Slide'),
+        ('tourist', 'Tourist Slide'),
+    ]
+    
+    title = models.CharField(max_length=200)
+    slide_type = models.CharField(max_length=20, choices=SLIDE_CHOICES, unique=True)
+    image = models.ImageField(upload_to='carousel_images/')
+    alt_text = models.CharField(max_length=255, help_text="Alternative text for accessibility")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Carousel Image"
+        verbose_name_plural = "Carousel Images"
+        ordering = ['slide_type']
+
+    def __str__(self):
+        return f"{self.get_slide_type_display()} - {self.title}"
+
+    @property
+    def image_url(self):
+        """Return image URL or empty string if no image"""
+        if self.image:
+            return self.image.url
+        return ''

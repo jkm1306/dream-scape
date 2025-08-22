@@ -69,13 +69,7 @@
     z-index: 1;
 }
 
-.carousel-item.student-slide {
-    background-image: url('{% static "images/students.jpg" %}');
-}
-
-.carousel-item.tourist-slide {
-    background-image: url('{% static "images/tourists.jpg" %}');
-}
+/* Removed hardcoded background images - now handled by template */
 
 .carousel-content {
     position: absolute;
@@ -364,6 +358,10 @@
     top: 12px;
 }
 
+.default-carousel-bg {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--desert-brown) 100%);
+}
+
 @media (max-width: 768px) {
     .carousel-content h1 {
         font-size: 2.5rem;
@@ -398,7 +396,11 @@
             
             <div class="carousel-inner">
                 <!-- Student Slide -->
-                <div class="carousel-item active student-slide">
+                <div class="carousel-item active student-slide 
+                    {% if not carousel_images.student %}default-carousel-bg{% endif %}" 
+                    {% if carousel_images.student and carousel_images.student.image_url %}
+                    style="background-image: url('{{ carousel_images.student.image_url }}');"
+                    {% endif %}>
                     <div class="cultural-pattern"></div>
                     <div class="carousel-content">
                         <div class="slide-content">
@@ -423,7 +425,11 @@
                 </div>
                 
                 <!-- Tourist Slide -->
-                <div class="carousel-item tourist-slide">
+                <div class="carousel-item tourist-slide 
+                    {% if not carousel_images.tourist %}default-carousel-bg{% endif %}" 
+                    {% if carousel_images.tourist and carousel_images.tourist.image_url %}
+                    style="background-image: url('{{ carousel_images.tourist.image_url }}');"
+                    {% endif %}>
                     <div class="cultural-pattern"></div>
                     <div class="carousel-content">
                         <div class="slide-content">
@@ -715,48 +721,80 @@
                     </div>
                 </div>
             {% empty %}
-                <!-- Fallback to your existing static testimonials if no database testimonials -->
+                <!-- Fallback to static testimonials if no database testimonials -->
                 <div class="col-lg-4 mb-4">
                     <div class="service-card h-100">
                         <div class="mb-3">
                             <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
                         </div>
-                        <p class="mb-4">
-                            "DreamScape understood my cultural background and helped me secure a scholarship in Poland. 
-                            They made me feel at home while pursuing my European dreams!"
-                        </p>
+                        <div class="mb-3">
+                            <span style="color: var(--gold); font-size: 1.2rem;">
+                                ★★★★★
+                            </span>
+                        </div>
+                        <p class="mb-4">"DreamScape made my study abroad journey seamless. Their cultural understanding and support helped me feel at home in Poland."</p>
                         <div class="d-flex align-items-center">
                             <div class="rounded-circle d-flex align-items-center justify-content-center" 
                                  style="width: 50px; height: 50px; background: var(--primary-blue);">
-                                <span class="text-white fw-bold">MK</span>
+                                <span class="text-white fw-bold">AM</span>
                             </div>
                             <div class="ms-3">
-                                <h6 class="mb-0" style="color: var(--primary-blue);">Michael Kasonde</h6>
-                                <small class="text-muted">Computer Science Student, Warsaw</small>
+                                <h6 class="mb-0" style="color: var(--primary-blue);">Amara Mohammed</h6>
+                                <small class="text-muted">Student in Warsaw, Poland</small>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Add your other static testimonials here -->
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="service-card h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
+                        </div>
+                        <div class="mb-3">
+                            <span style="color: var(--gold); font-size: 1.2rem;">
+                                ★★★★★
+                            </span>
+                        </div>
+                        <p class="mb-4">"The travel package to Denmark was perfectly planned. Every detail respected our cultural preferences while showing us the beauty of Scandinavian culture."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background: var(--primary-blue);">
+                                <span class="text-white fw-bold">KA</span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0" style="color: var(--primary-blue);">Kwame Asante</h6>
+                                <small class="text-muted">Traveler from Ghana</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="service-card h-100">
+                        <div class="mb-3">
+                            <i class="fas fa-quote-left fa-2x" style="color: var(--desert-brown);"></i>
+                        </div>
+                        <div class="mb-3">
+                            <span style="color: var(--gold); font-size: 1.2rem;">
+                                ★★★★★
+                            </span>
+                        </div>
+                        <p class="mb-4">"Northern Cyprus exceeded all expectations. DreamScape's guidance helped me navigate university life while maintaining my cultural identity."</p>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 50px; height: 50px; background: var(--primary-blue);">
+                                <span class="text-white fw-bold">FO</span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0" style="color: var(--primary-blue);">Fatima Okonkwo</h6>
+                                <small class="text-muted">Student in Nicosia, Cyprus</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </div>
-        
-        <div class="text-center mt-5">
-            <a href="{% url 'services:testimonials' %}" class="btn-cultural-primary">
-                <i class="fas fa-pen me-2"></i>Share Your Experience
-            </a>
         </div>
     </div>
 </section>
-
-<script>
-// Auto-start carousel with smooth transitions
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = new bootstrap.Carousel(document.getElementById('heroCarousel'), {
-        interval: 5000,
-        wrap: true,
-        touch: true
-    });
-});
-</script>
 {% endblock %}

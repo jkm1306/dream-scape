@@ -5,3 +5,24 @@ from .models import *
 admin.site.register(StudentApplication)
 admin.site.register(TouristInquiry)
 admin.site.register(Testimonial)
+
+@admin.register(CarouselImage)
+class CarouselImageAdmin(admin.ModelAdmin):
+    list_display = ['title', 'slide_type', 'is_active', 'updated_at']
+    list_filter = ['slide_type', 'is_active', 'created_at']
+    search_fields = ['title', 'alt_text']
+    list_editable = ['is_active']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slide_type', 'image', 'alt_text')
+        }),
+        ('Settings', {
+            'fields': ('is_active',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
