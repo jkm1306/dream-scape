@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import StudentApplicationForm, TouristInquiryForm, Testimonial, TestimonialForm
-from .models import CarouselImage
+from .models import *
 
 def home(request):
     # Get approved testimonials for the homepage
@@ -53,10 +53,12 @@ def about(request):
 
 
 def students(request):
-    return render(request, 'services/students.html')
+    destinations = StudentDestination.objects.prefetch_related("images").all()
+    return render(request, 'services/students.html', {"destinations": destinations})
 
 def tourists(request):
-    return render(request, 'services/tourists.html')
+    destinations = TouristDestination.objects.prefetch_related("images").all()
+    return render(request, 'services/tourists.html', {"destinations": destinations})
 
 
 def student_application_view(request):

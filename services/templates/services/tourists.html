@@ -276,313 +276,58 @@
         </div>
         
         <div class="row">
-            <!-- Zambia -->
+            {% for destination in destinations %}
             <div class="col-lg-4 col-md-6">
                 <div class="country-card">
+                    <!-- Image carousel -->
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/zambia/victoria.png' %}" alt="Victoria Falls" class="carousel-image">
-                            <img src="{% static 'images/zambia/lusaka.png' %}" alt="Lusaka City" class="carousel-image">
-                            <img src="{% static 'images/zambia/kafue.jpg' %}" alt="Kafue National Park" class="carousel-image">
+                            {% for img in destination.images.all %}
+                                <img src="{{ img.image.url }}" alt="{{ destination.name }}" class="carousel-image">
+                            {% empty %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder" class="carousel-image">
+                            {% endfor %}
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
+                            {% for img in destination.images.all %}
+                                <div class="indicator"></div>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇿🇲 Zambia
-                        </h3>
-                        <p class="country-description">
-                            Experience the thunderous Victoria Falls, vibrant culture, and warm hospitality of the friendly nation.
-                        </p>
-                        <div class="attractions-list">
-                            <div class="attraction-item">
-                                <i class="fas fa-water"></i>
-                                Victoria Falls - The Smoke that Thunders
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-leaf"></i>
-                                South Luangwa National Park
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-city"></i>
-                                Lusaka Cultural Heritage
-                            </div>
-                        </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=zambia" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
-                        </a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Ghana -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/ghana/castle.jpg' %}" alt="Cape Coast Castle" class="carousel-image">
-                            <img src="{% static 'images/ghana/accra.jpg' %}" alt="Accra Markets" class="carousel-image">
-                            <img src="{% static 'images/ghana/kakum.jpg' %}" alt="Kakum National Park" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
+                    <!-- Info -->
                     <div class="country-info">
                         <h3 class="country-name">
-                            🇬🇭 Ghana
+                            {{ destination.country_flag }} {{ destination.name }}
                         </h3>
                         <p class="country-description">
-                            Discover the Gateway to Africa with rich history, vibrant markets, and the warmth of Ghanaian hospitality.
+                            {{ destination.description }}
                         </p>
                         <div class="attractions-list">
+                            {% if destination.attraction_1 %}
                             <div class="attraction-item">
-                                <i class="fas fa-fort-awesome"></i>
-                                Cape Coast Castle & Elmina
+                                <i class="fas fa-map-marker-alt"></i> {{ destination.attraction_1 }}
                             </div>
+                            {% endif %}
+                            {% if destination.attraction_2 %}
                             <div class="attraction-item">
-                                <i class="fas fa-tree"></i>
-                                Kakum Canopy Walkway
+                                <i class="fas fa-map-marker-alt"></i> {{ destination.attraction_2 }}
                             </div>
+                            {% endif %}
+                            {% if destination.attraction_3 %}
                             <div class="attraction-item">
-                                <i class="fas fa-drum"></i>
-                                Kumasi Traditional Arts
+                                <i class="fas fa-map-marker-alt"></i> {{ destination.attraction_3 }}
                             </div>
+                            {% endif %}
                         </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=ghana" class="inquiry-btn">
+                        <a href="{% url 'services:tourist_inquiry' %}?destination={{ destination.name|slugify }}" class="inquiry-btn">
                             <i class="fas fa-plane me-2"></i>Plan Your Visit
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Eswatini -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/eswatini/cultural.jpg' %}" alt="Hlane Royal National Park" class="carousel-image">
-                            <img src="{% static 'images/eswatini/mbabane.jpg' %}" alt="Mbabane City" class="carousel-image">
-                            <img src="{% static 'images/eswatini/national_park.jpg' %}" alt="Traditional Swazi Culture" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇸🇿 Eswatini
-                        </h3>
-                        <p class="country-description">
-                            Experience the last absolute monarchy in Africa with preserved traditions and stunning landscapes.
-                        </p>
-                        <div class="attractions-list">
-                            <div class="attraction-item">
-                                <i class="fas fa-crown"></i>
-                                Royal Swazi Cultural Village
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-mountain"></i>
-                                Malolotja Nature Reserve
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-elephant"></i>
-                                Hlane Royal National Park
-                            </div>
-                        </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=eswatini" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Zimbabwe -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/zimbabwe/great_zimbabwe.jpg' %}" alt="Great Zimbabwe Ruins" class="carousel-image">
-                            <img src="{% static 'images/zimbabwe/park.jpg' %}" alt="Hwange National Park" class="carousel-image">
-                            <img src="{% static 'images/zimbabwe/harare.jpg' %}" alt="Harare City" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇿🇼 Zimbabwe
-                        </h3>
-                        <p class="country-description">
-                            Explore ancient ruins, world-class wildlife, and the majestic beauty of the African landscape.
-                        </p>
-                        <div class="attractions-list">
-                            <div class="attraction-item">
-                                <i class="fas fa-landmark"></i>
-                                Great Zimbabwe Ancient Ruins
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-paw"></i>
-                                Hwange National Park Safari
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-water"></i>
-                                Victoria Falls (Zimbabwe Side)
-                            </div>
-                        </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=zimbabwe" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- China -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/china/great_wall.jpg' %}" alt="Great Wall of China" class="carousel-image">
-                            <img src="{% static 'images/china/forbidden_city.jpg' %}" alt="Forbidden City" class="carousel-image">
-                            <img src="{% static 'images/china/shanghai.jpg' %}" alt="Shanghai Skyline" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇨🇳 China
-                        </h3>
-                        <p class="country-description">
-                            Journey through ancient civilizations, modern marvels, and diverse cultural experiences across the Middle Kingdom.
-                        </p>
-                        <div class="attractions-list">
-                            <div class="attraction-item">
-                                <i class="fas fa-wall-brick"></i>
-                                Great Wall of China
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-torii-gate"></i>
-                                Forbidden City & Temple of Heaven
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-city"></i>
-                                Shanghai & Modern China
-                            </div>
-                        </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=china" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dubai -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/dubai/city.png' %}" alt="Burj Khalifa" class="carousel-image">
-                            <img src="{% static 'images/dubai/mall.jpg' %}" alt="Dubai Mall" class="carousel-image">
-                            <img src="{% static 'images/dubai/desert.jpg' %}" alt="Desert Safari" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇦🇪 Dubai, UAE
-                        </h3>
-                        <p class="country-description">
-                            Experience luxury, tradition, and innovation in the jewel of the Middle East with halal-friendly tourism.
-                        </p>
-                        <div class="attractions-list">
-                            <div class="attraction-item">
-                                <i class="fas fa-building"></i>
-                                Burj Khalifa & Dubai Fountains
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-mosque"></i>
-                                Traditional Souks & Mosques
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-ship"></i>
-                                Desert Safari & Dhow Cruise
-                            </div>
-                        </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=dubai" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Nigeria -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/nigeria/lagos.jpg' %}" alt="Lagos Skyline" class="carousel-image">
-                            <img src="{% static 'images/nigeria/abuja.jpg' %}" alt="Abuja National Mosque" class="carousel-image">
-                            <img src="{% static 'images/nigeria/kano.jpg' %}" alt="Kano Ancient City" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇳🇬 Nigeria
-                        </h3>
-                        <p class="country-description">
-                            Discover the Giant of Africa with diverse cultures, bustling cities, and rich musical heritage.
-                        </p>
-                        <div class="attractions-list">
-                            <div class="attraction-item">
-                                <i class="fas fa-city"></i>
-                                Lagos Island & Victoria Island
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-mosque"></i>
-                                Abuja National Mosque
-                            </div>
-                            <div class="attraction-item">
-                                <i class="fas fa-music"></i>
-                                Cultural Heritage & Nollywood
-                            </div>
-                        </div>
-                        <a href="{% url 'services:tourist_inquiry' %}?destination=nigeria" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
-                        </a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

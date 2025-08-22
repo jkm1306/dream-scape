@@ -138,3 +138,51 @@ class CarouselImage(models.Model):
         if self.image:
             return self.image.url
         return ''
+    
+
+
+class StudentDestination(models.Model):
+    name = models.CharField(max_length=100)
+    country_flag = models.CharField(max_length=10, blank=True, help_text="Emoji flag or leave blank")
+    description = models.TextField()
+    
+    # Optional cost info
+    tuition_fee = models.CharField(max_length=100, blank=True, null=True)
+    living_cost = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Scholarship info
+    scholarship_title = models.CharField(max_length=200, blank=True, null=True)
+    scholarship_details = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class StudentDestinationImage(models.Model):
+    destination = models.ForeignKey(StudentDestination, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="student_destinations/")
+    
+    def __str__(self):
+        return f"Image for {self.destination.name}"
+
+
+class TouristDestination(models.Model):
+    name = models.CharField(max_length=100)
+    country_flag = models.CharField(max_length=10, blank=True)
+    description = models.TextField()
+    
+    # Attractions (simple text list for now)
+    attraction_1 = models.CharField(max_length=200, blank=True, null=True)
+    attraction_2 = models.CharField(max_length=200, blank=True, null=True)
+    attraction_3 = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class TouristDestinationImage(models.Model):
+    destination = models.ForeignKey(TouristDestination, related_name="images", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="tourist_destinations/")
+    
+    def __str__(self):
+        return f"Image for {self.destination.name}"

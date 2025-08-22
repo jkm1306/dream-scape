@@ -26,3 +26,21 @@ class CarouselImageAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+
+class StudentDestinationImageInline(admin.TabularInline):
+    model = StudentDestinationImage
+    extra = 1
+
+@admin.register(StudentDestination)
+class StudentDestinationAdmin(admin.ModelAdmin):
+    inlines = [StudentDestinationImageInline]
+
+
+class TouristDestinationImageInline(admin.TabularInline):
+    model = TouristDestinationImage
+    extra = 1
+
+@admin.register(TouristDestination)
+class TouristDestinationAdmin(admin.ModelAdmin):
+    inlines = [TouristDestinationImageInline]

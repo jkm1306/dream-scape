@@ -320,10 +320,10 @@
     <div class="container">
         <h1 class="display-4 fw-bold mb-4">
             <i class="fas fa-graduation-cap me-3"></i>
-            Study in Europe
+            Study Abroad
         </h1>
         <p class="lead">
-            Transform your future with scholarship opportunities in top European universities, designed for African students
+            Transform your future with scholarship opportunities in top universities, designed for African students
         </p>
     </div>
 </section>
@@ -337,227 +337,68 @@
         </div>
         
         <div class="row">
-            <!-- Poland -->
+            {% for destination in destinations %}
             <div class="col-lg-4 col-md-6">
                 <div class="country-card">
                     <div class="image-carousel">
                         <div class="carousel-container">
-                            <img src="{% static 'images/poland/warsaw.png' %}" alt="African Students in Warsaw University" class="carousel-image">
-                            <img src="{% static 'images/poland/krawkow.png' %}" alt="Students in Krakow Campus" class="carousel-image">
-                            <img src="{% static 'images/poland/graduation_poland.png' %}" alt="Graduation Ceremony Poland" class="carousel-image">
+                            {% for img in destination.images.all %}
+                                <img src="{{ img.image.url }}" alt="{{ destination.name }}" class="carousel-image">
+                            {% empty %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Placeholder" class="carousel-image">
+                            {% endfor %}
                         </div>
                         <div class="image-overlay"></div>
                         <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
+                            {% for img in destination.images.all %}
+                                <div class="indicator"></div>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="country-info">
                         <h3 class="country-name">
-                            🇵🇱 Poland
+                            {{ destination.country_flag }} {{ destination.name }}
                         </h3>
                         <p class="country-description">
-                            Experience world-class education in the heart of Europe with excellent scholarship opportunities and vibrant student communities.
+                            {{ destination.description }}
                         </p>
                         
-                        <div class="study-highlights">
-                            <div class="highlight-item">
-                                <i class="fas fa-university"></i>
-                                Top-ranked universities with English programs
+                        {% if destination.tuition_fee or destination.living_cost %}
+                        <div class="cost-info">
+                            {% if destination.tuition_fee %}
+                            <div class="cost-item">
+                                <div class="cost-label">Tuition/Year</div>
+                                <div class="cost-value">{{ destination.tuition_fee }}</div>
                             </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-euro-sign"></i>
-                                Affordable living costs & tuition fees
+                            {% endif %}
+                            {% if destination.living_cost %}
+                            <div class="cost-item">
+                                <div class="cost-label">Living Cost</div>
+                                <div class="cost-value">{{ destination.living_cost }}</div>
                             </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-users"></i>
-                                Strong African student community
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-briefcase"></i>
-                                Post-graduation work opportunities
-                            </div>
+                            {% endif %}
                         </div>
+                        {% endif %}
 
+                        {% if destination.scholarship_title %}
                         <div class="scholarship-info">
                             <div class="scholarship-title">
                                 <i class="fas fa-award"></i>
-                                Available Scholarships
+                                {{ destination.scholarship_title }}
                             </div>
                             <div class="scholarship-details">
-                                • Polish Government Scholarships<br>
-                                • University Merit Scholarships<br>
-                                • EU Erasmus+ Programs<br>
-                                • Full & Partial funding available
+                                {{ destination.scholarship_details|linebreaks }}
                             </div>
                         </div>
+                        {% endif %}
 
-                        <div class="cost-info">
-                            <div class="cost-item">
-                                <div class="cost-label">Tuition/Year</div>
-                                <div class="cost-value">€2,000-4,000</div>
-                            </div>
-                            <div class="cost-item">
-                                <div class="cost-label">Living Cost</div>
-                                <div class="cost-value">€400-600/month</div>
-                            </div>
-                        </div>
-
-                        <a href="{% url 'services:student_application' %}?country=poland" class="apply-btn">
-                            <i class="fas fa-paper-plane me-2"></i>Apply for Poland
+                        <a href="{% url 'services:student_application' %}?country={{ destination.name|slugify }}" class="apply-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Apply for {{ destination.name }}
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Northern Cyprus -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/nothern_cyprus/afri_students.png' %}" alt="African Students in Northern Cyprus University" class="carousel-image">
-                            <img src="{% static 'images/nothern_cyprus/compass_life.png' %}" alt="Campus Life in Nicosia" class="carousel-image">
-                            <img src="{% static 'images/nothern_cyprus/ceremony.png' %}" alt="Graduation in Northern Cyprus" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇹🇷 Northern Cyprus
-                        </h3>
-                        <p class="country-description">
-                            Study in a culturally diverse Mediterranean environment with excellent universities and welcoming communities.
-                        </p>
-                        
-                        <div class="study-highlights">
-                            <div class="highlight-item">
-                                <i class="fas fa-sun"></i>
-                                Beautiful Mediterranean climate
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-mosque"></i>
-                                Muslim-friendly environment
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-globe"></i>
-                                International student community
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-certificate"></i>
-                                Internationally recognized degrees
-                            </div>
-                        </div>
-
-                        <div class="scholarship-info">
-                            <div class="scholarship-title">
-                                <i class="fas fa-award"></i>
-                                Available Scholarships
-                            </div>
-                            <div class="scholarship-details">
-                                • Turkish Government Scholarships<br>
-                                • University Excellence Scholarships<br>
-                                • Merit-based Financial Aid<br>
-                                • Cultural Exchange Programs
-                            </div>
-                        </div>
-
-                        <div class="cost-info">
-                            <div class="cost-item">
-                                <div class="cost-label">Tuition/Year</div>
-                                <div class="cost-value">$3,000-6,000</div>
-                            </div>
-                            <div class="cost-item">
-                                <div class="cost-label">Living Cost</div>
-                                <div class="cost-value">$300-500/month</div>
-                            </div>
-                        </div>
-
-                        <a href="{% url 'services:student_application' %}?country=northern_cyprus" class="apply-btn">
-                            <i class="fas fa-paper-plane me-2"></i>Apply for Northern Cyprus
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Denmark -->
-            <div class="col-lg-4 col-md-6">
-                <div class="country-card">
-                    <div class="image-carousel">
-                        <div class="carousel-container">
-                            <img src="{% static 'images/denmark/afri_students.png' %}" alt="African Students in Copenhagen University" class="carousel-image">
-                            <img src="{% static 'images/denmark/technical_uni.png' %}" alt="Technical University of Denmark" class="carousel-image">
-                            <img src="{% static 'images/denmark/student_life.png' %}" alt="Student Life in Denmark" class="carousel-image">
-                        </div>
-                        <div class="image-overlay"></div>
-                        <div class="carousel-indicators">
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                            <div class="indicator"></div>
-                        </div>
-                    </div>
-                    <div class="country-info">
-                        <h3 class="country-name">
-                            🇩🇰 Denmark
-                        </h3>
-                        <p class="country-description">
-                            Join one of the world's happiest countries with innovative education systems and excellent career prospects.
-                        </p>
-                        
-                        <div class="study-highlights">
-                            <div class="highlight-item">
-                                <i class="fas fa-lightbulb"></i>
-                                Innovation-focused education system
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-heart"></i>
-                                High quality of life & happiness index
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-language"></i>
-                                English-taught programs available
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-chart-line"></i>
-                                Excellent career opportunities
-                            </div>
-                        </div>
-
-                        <div class="scholarship-info">
-                            <div class="scholarship-title">
-                                <i class="fas fa-award"></i>
-                                Available Scholarships
-                            </div>
-                            <div class="scholarship-details">
-                                • Danish Government Scholarships<br>
-                                • University Tuition Waivers<br>
-                                • Nordplus Exchange Programs<br>
-                                • Research Assistant Positions
-                            </div>
-                        </div>
-
-                        <div class="cost-info">
-                            <div class="cost-item">
-                                <div class="cost-label">Tuition/Year</div>
-                                <div class="cost-value">€6,000-16,000</div>
-                            </div>
-                            <div class="cost-item">
-                                <div class="cost-label">Living Cost</div>
-                                <div class="cost-value">€800-1,200/month</div>
-                            </div>
-                        </div>
-
-                        <a href="{% url 'services:student_application' %}?country=denmark" class="apply-btn">
-                            <i class="fas fa-paper-plane me-2"></i>Apply for Denmark
-                        </a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -567,7 +408,7 @@
     <div class="container">
         <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Future?</h2>
         <p class="lead mb-4">
-            Take the first step towards your European education journey. Our expert team will guide you through every step of the application process.
+            Take the first step towards your education journey. Our expert team will guide you through every step of the application process.
         </p>
         <a href="{% url 'services:student_application' %}" class="cta-btn">
             <i class="fas fa-graduation-cap me-2"></i>
