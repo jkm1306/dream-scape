@@ -88,3 +88,12 @@ def tourist_destination_detail(request, pk):
     return render(request, "student_travel/tourist-detail.html", {
         "destination": destination
     })
+
+def student_destination_detail(request, pk):
+    destination = get_object_or_404(
+        StudentDestination.objects.prefetch_related("images", "schools__images"),
+        pk=pk
+    )
+    return render(request, "student_travel/student-detail.html", {
+        "destination": destination
+    })

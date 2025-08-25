@@ -126,6 +126,33 @@ class StudentDestinationImage(models.Model):
     
     def __str__(self):
         return f"Image for {self.destination.name}"
+    
+class School(models.Model):
+    destination = models.ForeignKey(
+        StudentDestination,
+        related_name="schools",
+        on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.destination.name})"
+
+
+class SchoolImage(models.Model):
+    school = models.ForeignKey(
+        School,
+        related_name="images",
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(upload_to="schools/")
+
+    def __str__(self):
+        return f"Image for {self.school.name}"
+
 
 
 class TouristDestination(models.Model):

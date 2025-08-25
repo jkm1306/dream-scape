@@ -362,7 +362,7 @@
                         <p class="country-description">
                             {{ destination.description }}
                         </p>
-                        
+
                         {% if destination.tuition_fee or destination.living_cost %}
                         <div class="cost-info">
                             {% if destination.tuition_fee %}
@@ -392,9 +392,12 @@
                         </div>
                         {% endif %}
 
-                        <a href="{% url 'services:student_application' %}?country={{ destination.name|slugify }}" class="apply-btn">
-                            <i class="fas fa-paper-plane me-2"></i>Apply for {{ destination.name }}
-                        </a>
+                        <!-- Only Details Button -->
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{% url 'student_travel:student_detail' destination.pk %}" class="apply-btn" style="background: #6c757d;">
+                                <i class="fas fa-info-circle me-2"></i>Details
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
