@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ destination.name }} - Attractions{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --primary-blue: #1e3a8a;
+    --desert-brown: #d2691e;
+    --gold: #fbbf24;
+    --cream: #fef3c7;
+}
+
+.tourist-hero {
+    background: linear-gradient(to right, var(--primary-blue), var(--gold));
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    border-radius: 0 0 2rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.country-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.country-card:hover {
+    transform: translateY(-5px);
+}
+
+.country-card img {
+    border-bottom: 3px solid var(--gold);
+}
+
+.inquiry-btn {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    background-color: var(--primary-blue);
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+    font-weight: 600;
+}
+
+.inquiry-btn:hover {
+    background-color: var(--gold);
+    color: black;
+}
+</style>
+
+<section class="tourist-hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold">{{ destination.name }} {{ destination.country_flag }}</h1>
+        <p class="lead">{{ destination.description }}</p>
+    </div>
+</section>
+
+<section class="destinations-section">
+    <div class="container">
+        <h2 class="mb-4">Attractions in {{ destination.name }}</h2>
+        <div class="row">
+            {% for attraction in destination.attractions.all %}
+            <div class="col-md-4 mb-4">
+                <div class="country-card">
+                    {% if attraction.images.all %}
+                        <img src="{{ attraction.images.first.image.url }}" 
+                             class="w-100" 
+                             style="height:200px; object-fit:cover;" 
+                             alt="{{ attraction.name }}">
+                    {% else %}
+                        <img src="{% static 'images/default-placeholder.png' %}" 
+                             class="w-100" 
+                             style="height:200px; object-fit:cover;" 
+                             alt="No image available">
+                    {% endif %}
+                    <div class="p-3 flex-grow-1 d-flex flex-column">
+                        <h4>{{ attraction.name }}</h4>
+                        <p>{{ attraction.description|truncatewords:25 }}</p>
+                        <div class="mt-auto">
+                            <a href="{% url 'student_travel:tourist_inquiry' %}?destination={{ destination.name|slugify }}&attraction={{ attraction.name|slugify }}" 
+                               class="inquiry-btn">
+                                Apply to Visit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No attractions added yet for this country.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

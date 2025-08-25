@@ -36,10 +36,31 @@ class StudentDestinationAdmin(admin.ModelAdmin):
     inlines = [StudentDestinationImageInline]
 
 
+class AttractionSiteImageInline(admin.TabularInline):
+    model = AttractionSiteImage
+    extra = 1
+
+
+@admin.register(AttractionSite)
+class AttractionSiteAdmin(admin.ModelAdmin):
+    inlines = [AttractionSiteImageInline]
+    list_display = ["name", "destination", "created_at"]
+    search_fields = ["name", "destination__name"]
+
+
 class TouristDestinationImageInline(admin.TabularInline):
     model = TouristDestinationImage
     extra = 1
 
+
+class AttractionInline(admin.TabularInline):
+    model = AttractionSite
+    extra = 1
+
+
 @admin.register(TouristDestination)
 class TouristDestinationAdmin(admin.ModelAdmin):
-    inlines = [TouristDestinationImageInline]
+    inlines = [TouristDestinationImageInline, AttractionInline]
+    list_display = ["name"]
+    search_fields = ["name"]
+

@@ -305,24 +305,20 @@
                             {{ destination.description }}
                         </p>
                         <div class="attractions-list">
-                            {% if destination.attraction_1 %}
-                            <div class="attraction-item">
-                                <i class="fas fa-map-marker-alt"></i> {{ destination.attraction_1 }}
-                            </div>
-                            {% endif %}
-                            {% if destination.attraction_2 %}
-                            <div class="attraction-item">
-                                <i class="fas fa-map-marker-alt"></i> {{ destination.attraction_2 }}
-                            </div>
-                            {% endif %}
-                            {% if destination.attraction_3 %}
-                            <div class="attraction-item">
-                                <i class="fas fa-map-marker-alt"></i> {{ destination.attraction_3 }}
-                            </div>
-                            {% endif %}
+                            {% for attraction in destination.attractions.all|slice:":3" %}
+                                <div class="attraction-item">
+                                    <i class="fas fa-map-marker-alt"></i> {{ attraction.name }}
+                                </div>
+                            {% empty %}
+                                <div class="attraction-item">
+                                    <i class="fas fa-info-circle"></i> No attractions listed yet
+                                </div>
+                            {% endfor %}
                         </div>
-                        <a href="{% url 'student_travel:tourist_inquiry' %}?destination={{ destination.name|slugify }}" class="inquiry-btn">
-                            <i class="fas fa-plane me-2"></i>Plan Your Visit
+
+                        <!-- Changed from inquiry form to details page -->
+                        <a href="{% url 'student_travel:tourist_detail' destination.id %}" class="inquiry-btn">
+                            <i class="fas fa-info-circle me-2"></i> Details
                         </a>
                     </div>
                 </div>

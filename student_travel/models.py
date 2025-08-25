@@ -56,6 +56,7 @@ class TouristInquiry(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     preferred_destination = models.CharField(max_length=20, choices=DESTINATION_CHOICES, help_text="Your preferred travel destination")
+    attraction = models.CharField(max_length=255, blank=True, null=True)  # If I want to know whicj attraction was applied for.
     destination_details = models.CharField(max_length=255, blank=True, null=True, help_text="Specific cities or attractions you'd like to visit")
     travel_date = models.DateField()
     number_of_people = models.PositiveIntegerField()
@@ -128,22 +129,60 @@ class StudentDestinationImage(models.Model):
 
 
 class TouristDestination(models.Model):
+    """
+    Represents a country (or main tourist destination).
+    """
     name = models.CharField(max_length=100)
-    country_flag = models.CharField(max_length=10, blank=True)
+    country_flag = models.CharField(max_length=10, blank=True, help_text="Emoji or leave blank")
     description = models.TextField()
-    
-    # Attractions (simple text list for now)
-    attraction_1 = models.CharField(max_length=200, blank=True, null=True)
-    attraction_2 = models.CharField(max_length=200, blank=True, null=True)
-    attraction_3 = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.name
 
 
 class TouristDestinationImage(models.Model):
-    destination = models.ForeignKey(TouristDestination, related_name="images", on_delete=models.CASCADE)
+    """
+    Images for the country itself (general images, not attraction-specific).
+    """
+    destination = models.ForeignKey(
+        TouristDestination,
+        related_name="images",
+        on_delete=models.CASCADE
+    )
     image = models.ImageField(upload_to="tourist_destinations/")
-    
+
     def __str__(self):
         return f"Image for {self.destination.name}"
+
+
+class AttractionSite(models.Model):
+    """
+    Specific attraction sites inside a country.
+    """
+    destination = models.ForeignKey(
+        TouristDestination,
+        related_name="attractions",
+        on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    location = models.CharField(max_length=200, blank=True, null=True)  # optional
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.destination.name})"
+
+
+class AttractionSiteImage(models.Model):
+    """
+    Images for each attraction site.
+    """
+    attraction = models.ForeignKey(
+        AttractionSite,
+        related_name="images",
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(upload_to="attraction_sites/")
+
+    def __str__(self):
+        return f"Image for {self.attraction.name}"

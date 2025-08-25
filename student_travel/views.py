@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def students(request):
@@ -9,7 +10,7 @@ def students(request):
     return render(request, 'student_travel/students.html', {"destinations": destinations})
 
 def tourists(request):
-    destinations = TouristDestination.objects.prefetch_related("images").all()
+    destinations = TouristDestination.objects.prefetch_related("images", "attractions").all()
     return render(request, 'student_travel/tourists.html', {"destinations": destinations})
 
 def student_application_view(request):
@@ -42,9 +43,10 @@ def student_application_view(request):
 
 
 def tourist_inquiry_view(request):
-    # Get the destination from URL parameter
+    # Get destination + attraction from URL params
     destination = request.GET.get('destination', None)
-    
+    attraction = request.GET.get('attraction', None)
+
     if request.method == "POST":
         form = TouristInquiryForm(request.POST, user=request.user, destination=destination)
         if form.is_valid():
@@ -52,19 +54,37 @@ def tourist_inquiry_view(request):
             if request.user.is_authenticated:
                 inquiry.submitted_by = request.user
             inquiry.save()
-            messages.success(request, "Your travel inquiry has been submitted successfully. Our team will contact you soon to plan your perfect trip!")
+            messages.success(
+                request,
+                "Your travel inquiry has been submitted successfully. Our team will contact you soon to plan your perfect trip!"
+            )
             return redirect("services:home")
     else:
         form = TouristInquiryForm(user=request.user, destination=destination)
-    
+
+        # Pre-fill the attraction field if provided
+        if attraction:
+            form.fields['destination_details'].initial = attraction.replace('-', ' ').title()
+
     # Get destination display name for template
     destination_display = None
     if destination:
         destination_choices = dict(form.fields['preferred_destination'].choices)
         destination_display = destination_choices.get(destination, destination.title())
-    
+
     return render(request, "student_travel/tourist_inquiry.html", {
         "form": form,
         "selected_destination": destination,
-        "destination_display": destination_display
+        "destination_display": destination_display,
+        "selected_attraction": attraction.replace('-', ' ').title() if attraction else None,
+    })
+
+
+def tourist_destination_detail(request, pk):
+    destination = get_object_or_404(
+        TouristDestination.objects.prefetch_related("images", "attractions__images"),
+        pk=pk
+    )
+    return render(request, "student_travel/tourist-detail.html", {
+        "destination": destination
     })

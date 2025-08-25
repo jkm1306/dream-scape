@@ -45,8 +45,8 @@ class TouristInquiryForm(forms.ModelForm):
         model = TouristInquiry
         fields = [
             "first_name", "last_name", "email", "phone", 
-            "preferred_destination", "destination_details", "travel_date", 
-            "number_of_people", "notes"
+            "preferred_destination", "attraction", "destination_details", 
+            "travel_date", "number_of_people", "notes"
         ]
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your first name'}),
@@ -54,7 +54,8 @@ class TouristInquiryForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'your.email@example.com'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+260 XXX XXX XXX'}),
             'preferred_destination': forms.Select(attrs={'class': 'form-control'}),
-            'destination_details': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Victoria Falls, Lusaka, Traditional villages'}),
+            'attraction': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Victoria Falls'}),
+            'destination_details': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Lusaka, Livingstone, Traditional villages'}),
             'travel_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'number_of_people': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of travelers', 'min': '1', 'max': '20'}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Tell us about special requirements, dietary needs, cultural preferences, or specific experiences you are looking for...'}),
@@ -63,15 +64,19 @@ class TouristInquiryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         destination = kwargs.pop('destination', None)
+        attraction = kwargs.pop('attraction', None)
         super().__init__(*args, **kwargs)
         
         if user and user.is_authenticated:
-            # Pre-populate fields with user data
             self.fields['first_name'].initial = user.first_name
             self.fields['last_name'].initial = user.last_name
             self.fields['phone'].initial = user.phone
             self.fields['email'].initial = user.email
         
-        # Pre-select destination if provided
         if destination:
             self.fields['preferred_destination'].initial = destination
+
+        if attraction:
+            self.fields['attraction'].initial = attraction.replace("-", " ").title()
+            # make it readonly if you want users not to edit
+            self.fields['attraction'].widget.attrs['readonly'] = True
