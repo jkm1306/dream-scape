@@ -1,0 +1,106 @@
+═══════════════════════════════════════════════════════════════
+ NASHIOL NYIRONGO — STUDENT 2: Functional Testing (Black Box & White Box)
+═══════════════════════════════════════════════════════════════
+
+  ☐ Install and run DreamScape locally
+  ☐ Design a minimum of 12 functional test cases
+     ☐ Cover valid inputs, invalid inputs, and edge cases
+     ☐ Apply Boundary Value Analysis (BVA)
+     ☐ Apply Equivalence Partitioning (EP)
+  ☐ Identify logic paths in the code (White Box Thinking)
+  ☐ Draw a Flow Diagram for ONE selected feature
+  ☐ Execute all test cases and record Pass/Fail results
+  ☐ Calculate personal QA Metrics:
+     ☐ Total Tests Executed
+     ☐ Pass Rate (%)
+     ☐ Fail Rate (%)
+     ☐ Number of Bugs Found
+  ☐ Write a brief explanation of ISO 9000 and CMM (Standards Awareness)
+  ☐ Write Personal Reflection:
+     ☐ Challenges Encountered
+     ☐ Key Testing Discoveries
+     ☐ Suggested Improvements for Developers
+  ☐ Contribute to Final Report (Functional Testing section)
+  ☐ Prepare for individual presentation questioning on Student 2 role
+
+═══════════════════════════════════════════════════════════════
+ JEROME KAMBAFWILE — STUDENT 1: Test Planning & Static Testing
+═══════════════════════════════════════════════════════════════
+
+  ☐ Install and run DreamScape locally
+  ☐ Develop the full Test Plan document:
+     ☐ Define Scope and Objectives
+     ☐ Define Testing Strategy
+     ☐ List Testing Techniques to be used
+  ☐ Perform Static Testing Activities:
+     ☐ Documentation Review (README, specs, comments)
+     ☐ GUI Inspection (visual walkthrough without executing code)
+  ☐ Calculate personal QA Metrics:
+     ☐ Total Tests Executed
+     ☐ Pass Rate (%)
+     ☐ Fail Rate (%)
+     ☐ Number of Bugs Found
+  ☐ Write a brief explanation of ISO 9000 and CMM (Standards Awareness)
+  ☐ Write Personal Reflection:
+     ☐ Challenges Encountered
+     ☐ Key Testing Discoveries
+     ☐ Suggested Improvements for Developers
+  ☐ Contribute to Final Report (Test Planning & Static Testing section)
+  ☐ Prepare for individual presentation questioning on Student 1 role
+
+═══════════════════════════════════════════════════════════════
+ MWEETWA CHINENE — STUDENT 3: Testing Tools & Automation
+═══════════════════════════════════════════════════════════════
+
+  ☐ Install and run DreamScape locally
+  ☐ Select and set up at least ONE free testing tool:
+     ☐ Option A: Selenium IDE — record automated UI tests
+     ☐ Option B: OWASP ZAP — run vulnerability scan
+     ☐ Option C: Postman — test API endpoints
+     ☐ Option D: Chrome Lighthouse — generate performance report
+  ☐ Execute the chosen tool against DreamScape
+  ☐ Capture screenshots and/or export tool output reports
+  ☐ Document tool setup steps and findings
+  ☐ Calculate personal QA Metrics:
+     ☐ Total Tests Executed
+     ☐ Pass Rate (%)
+     ☐ Fail Rate (%)
+     ☐ Number of Bugs Found
+  ☐ Write a brief explanation of ISO 9000 and CMM (Standards Awareness)
+  ☐ Write Personal Reflection:
+     ☐ Challenges Encountered
+     ☐ Key Testing Discoveries
+     ☐ Suggested Improvements for Developers
+  ☐ Contribute to Final Report (Tools & Automation section)
+  ☐ Prepare for individual presentation questioning on Student 3 role
+
+═══════════════════════════════════════════════════════════════
+ TINASHE MAPFUMO — STUDENT 4: Special Testing & Bug Management
+═══════════════════════════════════════════════════════════════
+
+  ☐ Install and run DreamScape locally
+  ☐ Perform Compatibility Testing:
+     ☐ Test on multiple browsers (Chrome, Firefox, Edge)
+     ☐ Test on different screen sizes / devices
+  ☐ Perform GUI Testing:
+     ☐ Check layout, navigation, responsiveness, and visual consistency
+  ☐ Perform Security Testing:
+     ☐ Check for common vulnerabilities (e.g., XSS, SQL Injection, open redirects)
+  ☐ Maintain the Bug Log with the following fields per bug:
+     ☐ Bug ID
+     ☐ Description
+     ☐ Severity (Critical / High / Medium / Low)
+     ☐ Steps to Reproduce
+     ☐ Status (New → Assigned → Fixed → Closed)
+  ☐ Calculate personal QA Metrics:
+     ☐ Total Tests Executed
+     ☐ Pass Rate (%)
+     ☐ Fail Rate (%)
+     ☐ Number of Bugs Found
+  ☐ Write a brief explanation of ISO 9000 and CMM (Standards Awareness)
+  ☐ Write Personal Reflection:
+     ☐ Challenges Encountered
+     ☐ Key Testing Discoveries
+     ☐ Suggested Improvements for Developers
+  ☐ Contribute to Final Report (Special Testing & Bug Lifecycle section)
+  ☐ Prepare for individual presentation questioning on Student 4 role
